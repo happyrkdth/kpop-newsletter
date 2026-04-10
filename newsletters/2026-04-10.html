@@ -7,602 +7,210 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
   :root {
-    --bg: #F7F5F0;
-    --surface: #FFFFFF;
-    --border: rgba(0,0,0,0.08);
-    --border-strong: rgba(0,0,0,0.14);
-    --text-primary: #111110;
-    --text-secondary: #5C5B57;
-    --text-muted: #9C9B96;
-    --accent: #1A1A18;
-    --pos: #0A6640;
-    --pos-bg: #EDFAF3;
-    --pos-border: #6DCCA0;
-    --neg: #9B2525;
-    --neg-bg: #FDF0EF;
-    --neg-border: #F0A09E;
-    --tag-bg: #EDECE8;
-    --tag-text: #5C5B57;
-    --purple: #4A3FB5;
-    --purple-bg: #EEEDFC;
-    --blue: #1558A8;
-    --blue-bg: #E8F0FA;
-    --pink: #9A2E5E;
-    --pink-bg: #FAEAF2;
-    --teal: #0D6B52;
-    --teal-bg: #E3F7F1;
-    --amber: #7A4B08;
-    --amber-bg: #FDF0D8;
+    --bg:#F7F5F0; --surface:#FFF;
+    --border:rgba(0,0,0,.08); --border-strong:rgba(0,0,0,.14);
+    --text-primary:#111110; --text-secondary:#5C5B57; --text-muted:#9C9B96;
+    --accent:#1A1A18;
+    --purple:#4A3FB5; --purple-bg:#EEEDFC;
+    --blue:#1558A8;   --blue-bg:#E8F0FA;
+    --pink:#9A2E5E;   --pink-bg:#FAEAF2;
+    --teal:#0D6B52;   --teal-bg:#E3F7F1;
+    --amber:#7A4B08;  --amber-bg:#FDF0D8;
   }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text-primary);
-    font-size: 15px;
-    line-height: 1.7;
-    min-height: 100vh;
-  }
-
-  .page { max-width: 680px; margin: 0 auto; padding: 0 1.25rem 4rem; }
-
-  /* ── HEADER ── */
-  .header {
-    padding: 2.5rem 0 2rem;
-    border-bottom: 1px solid var(--border-strong);
-    margin-bottom: 2rem;
-  }
-  .logo-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
-  .logo {
-    font-family: 'DM Serif Display', serif;
-    font-size: 13px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-  .date-badge {
-    font-size: 11px;
-    font-weight: 500;
-    padding: 3px 10px;
-    background: var(--accent);
-    color: #FFF;
-    border-radius: 99px;
-    letter-spacing: 0.06em;
-  }
-  .header h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 34px;
-    font-weight: 400;
-    line-height: 1.2;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
-  }
-  .header h1 em { font-style: italic; color: var(--text-secondary); }
-  .header-sub { font-size: 13px; color: var(--text-muted); }
-
-  /* ── INTRO ── */
-  .intro {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 1.25rem 1.5rem;
-    margin-bottom: 2.5rem;
-    font-size: 14px;
-    color: var(--text-secondary);
-    line-height: 1.75;
-  }
-
-  /* ── SECTION ── */
-  .section { margin-bottom: 2.5rem; }
-  .section-label {
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .optional-badge {
-    font-size: 9px;
-    padding: 2px 7px;
-    background: var(--tag-bg);
-    color: var(--text-muted);
-    border-radius: 99px;
-    letter-spacing: 0.06em;
-  }
-
-  /* ── CARDS ── */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 1.1rem 1.25rem;
-    margin-bottom: 0.6rem;
-  }
-  .card-row { display: flex; gap: 14px; align-items: flex-start; }
-  .card-icon {
-    width: 52px; height: 52px;
-    border-radius: 10px;
-    background: var(--bg);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
-    flex-shrink: 0;
-    border: 1px solid var(--border);
-  }
-  .card-body { flex: 1; min-width: 0; }
-  .card-title { font-size: 14px; font-weight: 500; margin-bottom: 3px; }
-  .card-source { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; }
-  .card-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
-  .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
-  .tag {
-    font-size: 11px; font-weight: 500;
-    padding: 2px 9px; border-radius: 99px;
-  }
-  .tag-purple { background: var(--purple-bg); color: var(--purple); }
-  .tag-blue   { background: var(--blue-bg);   color: var(--blue);   }
-  .tag-pink   { background: var(--pink-bg);   color: var(--pink);   }
-  .tag-teal   { background: var(--teal-bg);   color: var(--teal);   }
-  .tag-amber  { background: var(--amber-bg);  color: var(--amber);  }
-
-  /* ── COMEBACK TABLE ── */
-  .comeback-list { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
-  .comeback-item {
-    display: flex; align-items: center; gap: 14px;
-    padding: 0.85rem 1.25rem;
-    border-bottom: 1px solid var(--border);
-  }
-  .comeback-item:last-child { border-bottom: none; }
-  .cb-date {
-    font-size: 12px; font-weight: 500;
-    color: var(--text-muted);
-    min-width: 52px;
-    font-variant-numeric: tabular-nums;
-  }
-  .cb-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .cb-info { flex: 1; min-width: 0; }
-  .cb-artist { font-size: 14px; font-weight: 500; }
-  .cb-album { font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .status-badge {
-    font-size: 10px; font-weight: 500;
-    padding: 3px 9px; border-radius: 99px;
-    white-space: nowrap;
-  }
-  .status-done  { background: var(--tag-bg); color: var(--text-secondary); }
-  .status-soon  { background: var(--blue-bg); color: var(--blue); }
-  .status-upcoming { background: var(--amber-bg); color: var(--amber); }
-
-  /* ── MV CHART ── */
-  .mv-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.1rem 1.25rem; }
-  .mv-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-  .mv-row:last-child { margin-bottom: 0; }
-  .mv-rank { font-size: 11px; font-weight: 500; color: var(--text-muted); min-width: 16px; text-align: right; }
-  .mv-name { font-size: 13px; color: var(--text-secondary); min-width: 130px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .mv-track { flex: 1; height: 5px; background: var(--bg); border-radius: 99px; overflow: hidden; }
-  .mv-fill { height: 100%; border-radius: 99px; }
-  .mv-val { font-size: 12px; font-weight: 500; color: var(--text-primary); min-width: 40px; text-align: right; }
-  .mv-note { font-size: 11px; color: var(--text-muted); margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
-
-  /* ── REVIEW SUMMARY BAR ── */
-  .review-summary {
-    display: flex; gap: 1rem; align-items: center;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 1rem 1.25rem;
-    margin-bottom: 1rem;
-  }
-  .rs-stat { text-align: center; min-width: 48px; }
-  .rs-num { font-size: 22px; font-weight: 500; }
-  .rs-lbl { font-size: 10px; color: var(--text-muted); margin-top: 1px; letter-spacing: 0.04em; }
-  .rs-divider { width: 1px; height: 36px; background: var(--border-strong); flex-shrink: 0; }
-  .rs-bar-wrap { flex: 1; }
-  .rs-bar-lbl { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; }
-  .rs-bar-track { height: 6px; background: var(--neg-bg); border-radius: 99px; overflow: hidden; }
-  .rs-bar-fill { height: 100%; background: var(--pos-border); border-radius: 99px; }
-  .rs-bar-sub { font-size: 11px; color: var(--text-secondary); margin-top: 5px; }
-
-  /* ── REVIEW TABS ── */
-  .tabs { display: flex; gap: 5px; margin-bottom: 0.85rem; }
-  .tab {
-    font-size: 12px; font-weight: 500;
-    padding: 5px 14px; border-radius: 99px;
-    border: 1px solid var(--border-strong);
-    cursor: pointer; background: transparent;
-    color: var(--text-secondary);
-    transition: all 0.12s;
-    font-family: 'DM Sans', sans-serif;
-  }
-  .tab:hover { background: var(--bg); }
-  .tab.active-all { background: var(--accent); color: #FFF; border-color: var(--accent); }
-  .tab.active-pos { background: var(--pos-bg); color: var(--pos); border-color: var(--pos-border); }
-  .tab.active-neg { background: var(--neg-bg); color: var(--neg); border-color: var(--neg-border); }
-
-  /* ── REVIEW CARDS ── */
-  .review-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 1.1rem 1.25rem;
-    margin-bottom: 0.6rem;
-  }
-  .review-card.positive { border-left: 3px solid var(--pos-border); border-radius: 0 14px 14px 0; }
-  .review-card.negative { border-left: 3px solid var(--neg-border); border-radius: 0 14px 14px 0; }
-  .review-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
-  .review-source { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
-  .sentiment-pill {
-    font-size: 10px; font-weight: 500;
-    padding: 2px 8px; border-radius: 99px;
-  }
-  .pill-pos { background: var(--pos-bg); color: var(--pos); }
-  .pill-neg { background: var(--neg-bg); color: var(--neg); }
-  .review-headline { font-size: 14px; font-weight: 500; margin-bottom: 5px; line-height: 1.45; }
-  .review-body { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
-  .review-meta { display: flex; align-items: center; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
-  .review-artist { font-size: 11px; color: var(--text-muted); }
-
-  /* ── FOOTER ── */
-  .footer {
-    border-top: 1px solid var(--border);
-    padding-top: 1.5rem;
-    margin-top: 1rem;
-    font-size: 12px;
-    color: var(--text-muted);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .footer a { color: var(--text-muted); text-decoration: none; }
-  .footer a:hover { color: var(--text-primary); }
-
-  @media (max-width: 540px) {
-    .header h1 { font-size: 26px; }
-    .mv-name { min-width: 90px; }
-    .review-summary { flex-wrap: wrap; }
-    .footer { flex-direction: column; gap: 8px; text-align: center; }
+  body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text-primary); font-size:15px; line-height:1.7; }
+  .page { max-width:680px; margin:0 auto; padding:0 1.25rem 4rem; }
+  .header { padding:2.5rem 0 2rem; border-bottom:1px solid var(--border-strong); margin-bottom:2rem; }
+  .logo-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem; }
+  .logo { font-family:'DM Serif Display',serif; font-size:13px; letter-spacing:.18em; text-transform:uppercase; color:var(--text-muted); }
+  .date-badge { font-size:11px; font-weight:500; padding:3px 10px; background:var(--accent); color:#FFF; border-radius:99px; }
+  .header h1 { font-family:'DM Serif Display',serif; font-size:34px; font-weight:400; line-height:1.2; margin-bottom:.5rem; }
+  .header h1 em { font-style:italic; color:var(--text-secondary); }
+  .header-sub { font-size:13px; color:var(--text-muted); }
+  .intro { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.25rem 1.5rem; margin-bottom:2.5rem; font-size:14px; color:var(--text-secondary); line-height:1.75; }
+  .section { margin-bottom:2.5rem; }
+  .section-label { font-size:10px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--text-muted); padding-bottom:.75rem; border-bottom:1px solid var(--border); margin-bottom:1rem; }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.1rem 1.25rem; margin-bottom:.6rem; }
+  .card-row { display:flex; gap:14px; align-items:flex-start; }
+  .card-icon { width:52px; height:52px; border-radius:10px; background:var(--bg); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; border:1px solid var(--border); }
+  .card-body { flex:1; min-width:0; }
+  .card-title { font-size:14px; font-weight:500; margin-bottom:3px; }
+  .card-source { font-size:11px; color:var(--text-muted); }
+  .tags { display:flex; flex-wrap:wrap; gap:5px; }
+  .tag { font-size:11px; font-weight:500; padding:2px 9px; border-radius:99px; }
+  .tag-purple { background:var(--purple-bg); color:var(--purple); }
+  .tag-blue   { background:var(--blue-bg);   color:var(--blue); }
+  .tag-pink   { background:var(--pink-bg);   color:var(--pink); }
+  .tag-teal   { background:var(--teal-bg);   color:var(--teal); }
+  .tag-amber  { background:var(--amber-bg);  color:var(--amber); }
+  .mv-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.1rem 1.25rem; }
+  .mv-row { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+  .mv-row:last-of-type { margin-bottom:0; }
+  .mv-rank { font-size:11px; font-weight:500; color:var(--text-muted); min-width:16px; text-align:right; }
+  .mv-name { font-size:13px; color:var(--text-secondary); min-width:130px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .mv-track { flex:1; height:5px; background:var(--bg); border-radius:99px; overflow:hidden; }
+  .mv-fill { height:100%; border-radius:99px; }
+  .mv-val { font-size:12px; font-weight:500; color:var(--text-primary); min-width:40px; text-align:right; }
+  .mv-note { font-size:11px; color:var(--text-muted); margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
+  .article-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1rem 1.25rem; margin-bottom:.6rem; }
+  .article-source { font-size:10px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--text-muted); margin-bottom:5px; }
+  .article-title { font-size:14px; font-weight:500; color:var(--text-primary); text-decoration:none; line-height:1.45; display:block; }
+  .article-title:hover { color:var(--purple); }
+  .footer { border-top:1px solid var(--border); padding-top:1.5rem; margin-top:1rem; font-size:12px; color:var(--text-muted); display:flex; align-items:center; justify-content:space-between; }
+  .footer a { color:var(--text-muted); text-decoration:none; }
+  @media(max-width:540px) {
+    .header h1 { font-size:26px; }
+    .mv-name { min-width:90px; }
+    .footer { flex-direction:column; gap:8px; text-align:center; }
   }
 </style>
 </head>
 <body>
 <div class="page">
 
-  <!-- HEADER -->
   <div class="header">
     <div class="logo-row">
       <div class="logo">K-pop Intelligence</div>
-      <div class="date-badge">2026 · 04 · 10</div>
+      <div class="date-badge">2026-04-10</div>
     </div>
     <h1>케이팝 인텔리전스<br><em>데일리 브리핑</em></h1>
     <div class="header-sub">금요일 · 엔터산업 담당자를 위한 자동 업데이트</div>
   </div>
 
-  <!-- INTRO -->
-  <div class="intro">
-    이번 주 가장 주목할 움직임은 aespa의 정규 2집 《Whiplash》 발매입니다. SM 3.0 체계 이후 처음으로 완전 자체 기획된 정규작으로, 빌보드는 "K-pop 장르 실험의 새 기준점"이라 평가했습니다. 한편 NME와 Pitchfork는 4세대 전반의 장르 혼종화 피로를 지적하며 부정적 논평을 냈습니다. 필리핀 P-pop 그룹 BINI는 《The Guardian》에서 집중 조명을 받으며 아시안팝 글로벌 확장 사례로 부상했습니다.
-  </div>
+  <div class="intro">외신에서는 총 15건의 K-pop 관련 기사가 수집됐습니다. 아래에서 신보 발매·MV 조회수·외신 헤드라인을 확인하세요.</div>
 
-  <!-- 신보 발매 -->
   <div class="section">
-    <div class="section-label">신보 발매 소식</div>
-
-    <div class="card">
-      <div class="card-row">
-        <div class="card-icon">🎵</div>
-        <div class="card-body">
-          <div class="card-title">aespa — 《Whiplash》 정규 2집</div>
-          <div class="card-source">SM 엔터테인먼트 · 발매일 2026-04-09</div>
-          <div class="card-desc">총 10트랙. 타이틀곡 'Whiplash'은 하이브리드 메탈팝 장르를 표방하며, AI 세계관(æ-UNIVERSE)을 서사적으로 확장. SM 3.0 출범 후 처음으로 내부에서 완전히 기획·제작된 정규작. 2·3번 트랙의 프로덕션 밀도가 특히 주목받고 있음.</div>
-          <div class="tags">
-            <span class="tag tag-pink">하이브리드 메탈팝</span>
-            <span class="tag tag-purple">세계관 확장</span>
-            <span class="tag tag-blue">SM 3.0</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-row">
-        <div class="card-icon">🎵</div>
-        <div class="card-body">
-          <div class="card-title">SEVENTEEN — 《Spill the Feels》 미니 11집</div>
-          <div class="card-source">PLEDIS (HYBE) · 발매일 2026-04-14 예정</div>
-          <div class="card-desc">전작 대비 감정선 중심의 서정적 팝 방향성. 자체 프로듀싱 비중 80% 이상 유지. 북미·유럽 투어 연계 마케팅 전략 병행 예정.</div>
-          <div class="tags">
-            <span class="tag tag-teal">서정 팝</span>
-            <span class="tag tag-blue">자체 프로듀싱</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-row">
-        <div class="card-icon">🎵</div>
-        <div class="card-body">
-          <div class="card-title">ILLIT — 데뷔 1주년 미니앨범</div>
-          <div class="card-source">BELIFT LAB (HYBE) · 발매일 2026-04-18 예정</div>
-          <div class="card-desc">'달콤하고 중독적인 팝' 콘셉트 유지. 일본 시장 동시 공략 전략 포함. 기념일 마케팅과 팬덤 소비 극대화 구조 병행.</div>
-          <div class="tags">
-            <span class="tag tag-amber">1주년 기념</span>
-            <span class="tag tag-pink">버블팝</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-row">
-        <div class="card-icon">🎵</div>
-        <div class="card-body">
-          <div class="card-title">BINI — 《Talaarawan》 EP</div>
-          <div class="card-source">Star Music (Philippines) · 발매일 2026-04-25 예정</div>
-          <div class="card-desc">필리핀 P-pop 신에서 K-pop 포맷을 가장 성공적으로 현지화한 사례로 꼽힘. 타이틀곡은 필리핀어·영어 혼용 가사로 동남아 및 글로벌 시장 동시 공략.</div>
-          <div class="tags">
-            <span class="tag tag-teal">P-pop</span>
-            <span class="tag tag-purple">로컬라이제이션</span>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="section-label">신보 발매 소식 (최근 30일)</div>
+    <p style='color:#9C9B96;font-size:13px;padding:1rem 0;'>최근 30일 내 신보 없음</p>
   </div>
 
-  <!-- 컴백 일정 -->
-  <div class="section">
-    <div class="section-label">컴백 일정</div>
-    <div class="comeback-list">
-      <div class="comeback-item">
-        <div class="cb-date">04/09</div>
-        <div class="cb-dot" style="background:#D4537E;"></div>
-        <div class="cb-info">
-          <div class="cb-artist">aespa</div>
-          <div class="cb-album">《Whiplash》 정규 2집 — SM 엔터테인먼트</div>
-        </div>
-        <span class="status-badge status-done">발매 완료</span>
-      </div>
-      <div class="comeback-item">
-        <div class="cb-date">04/14</div>
-        <div class="cb-dot" style="background:#378ADD;"></div>
-        <div class="cb-info">
-          <div class="cb-artist">SEVENTEEN</div>
-          <div class="cb-album">《Spill the Feels》 미니 11집 — PLEDIS</div>
-        </div>
-        <span class="status-badge status-soon">D-4</span>
-      </div>
-      <div class="comeback-item">
-        <div class="cb-date">04/18</div>
-        <div class="cb-dot" style="background:#EF9F27;"></div>
-        <div class="cb-info">
-          <div class="cb-artist">ILLIT</div>
-          <div class="cb-album">데뷔 1주년 미니앨범 — BELIFT LAB</div>
-        </div>
-        <span class="status-badge status-soon">D-8</span>
-      </div>
-      <div class="comeback-item">
-        <div class="cb-date">04/25</div>
-        <div class="cb-dot" style="background:#7F77DD;"></div>
-        <div class="cb-info">
-          <div class="cb-artist">BINI</div>
-          <div class="cb-album">《Talaarawan》 EP — Star Music (PH)</div>
-        </div>
-        <span class="status-badge status-upcoming">D-15</span>
-      </div>
-      <div class="comeback-item">
-        <div class="cb-date">05/02</div>
-        <div class="cb-dot" style="background:#1D9E75;"></div>
-        <div class="cb-info">
-          <div class="cb-artist">NewJeans</div>
-          <div class="cb-album">정규 1집 — ADOR</div>
-        </div>
-        <span class="status-badge status-upcoming">D-22</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- MV 조회수 -->
   <div class="section">
     <div class="section-label">주요 MV 조회수</div>
     <div class="mv-card">
-      <div class="mv-row">
-        <div class="mv-rank">1</div>
-        <div class="mv-name">BLACKPINK — DDU-DU DDU-DU</div>
-        <div class="mv-track"><div class="mv-fill" style="width:100%;background:#D4537E;"></div></div>
-        <div class="mv-val">2.18B</div>
-      </div>
-      <div class="mv-row">
-        <div class="mv-rank">2</div>
-        <div class="mv-name">BTS — Dynamite</div>
-        <div class="mv-track"><div class="mv-fill" style="width:88%;background:#378ADD;"></div></div>
-        <div class="mv-val">1.92B</div>
-      </div>
-      <div class="mv-row">
-        <div class="mv-rank">3</div>
-        <div class="mv-name">ILLIT — Magnetic</div>
-        <div class="mv-track"><div class="mv-fill" style="width:40%;background:#EF9F27;"></div></div>
-        <div class="mv-val">870M</div>
-      </div>
-      <div class="mv-row">
-        <div class="mv-rank">4</div>
-        <div class="mv-name">SEVENTEEN — MAESTRO</div>
-        <div class="mv-track"><div class="mv-fill" style="width:28%;background:#1D9E75;"></div></div>
-        <div class="mv-val">610M</div>
-      </div>
-      <div class="mv-row">
-        <div class="mv-rank">5</div>
-        <div class="mv-name">aespa — Whiplash</div>
-        <div class="mv-track"><div class="mv-fill" style="width:22%;background:#7F77DD;"></div></div>
-        <div class="mv-val">48M</div>
-      </div>
-      <div class="mv-note">* 유튜브 기준 누적 조회수 · 매일 자동 업데이트</div>
+      
+  <div class="mv-row">
+    <div class="mv-rank">1</div>
+    <div class="mv-name">BLACKPINK — DDU-DU DDU-DU</div>
+    <div class="mv-track"><div class="mv-fill" style="width:100%;background:#D4537E;"></div></div>
+    <div class="mv-val">2.38B</div>
+  </div>
+
+  <div class="mv-row">
+    <div class="mv-rank">2</div>
+    <div class="mv-name">BTS — Dynamite</div>
+    <div class="mv-track"><div class="mv-fill" style="width:87%;background:#378ADD;"></div></div>
+    <div class="mv-val">2.07B</div>
+  </div>
+
+  <div class="mv-row">
+    <div class="mv-rank">3</div>
+    <div class="mv-name">ILLIT — Magnetic</div>
+    <div class="mv-track"><div class="mv-fill" style="width:0%;background:#EF9F27;"></div></div>
+    <div class="mv-val">0</div>
+  </div>
+
+  <div class="mv-row">
+    <div class="mv-rank">4</div>
+    <div class="mv-name">SEVENTEEN — MAESTRO</div>
+    <div class="mv-track"><div class="mv-fill" style="width:0%;background:#1D9E75;"></div></div>
+    <div class="mv-val">0</div>
+  </div>
+
+  <div class="mv-row">
+    <div class="mv-rank">5</div>
+    <div class="mv-name">aespa — Whiplash</div>
+    <div class="mv-track"><div class="mv-fill" style="width:0%;background:#7F77DD;"></div></div>
+    <div class="mv-val">0</div>
+  </div>
+      <div class="mv-note">* 유튜브 기준 누적 조회수 · 매일 오전 8시 자동 업데이트</div>
     </div>
   </div>
 
-  <!-- 외신 평론 -->
   <div class="section">
-    <div class="section-label">
-      외신 평론
-      <span class="optional-badge">선택 섹션</span>
-    </div>
-
-    <div class="review-summary">
-      <div class="rs-stat">
-        <div class="rs-num" style="color:var(--pos);">5</div>
-        <div class="rs-lbl">긍정</div>
-      </div>
-      <div class="rs-divider"></div>
-      <div class="rs-stat">
-        <div class="rs-num" style="color:var(--neg);">3</div>
-        <div class="rs-lbl">부정</div>
-      </div>
-      <div class="rs-divider"></div>
-      <div class="rs-bar-wrap">
-        <div class="rs-bar-lbl">이번 주 평론 온도</div>
-        <div class="rs-bar-track"><div class="rs-bar-fill" style="width:62%;"></div></div>
-        <div class="rs-bar-sub">62% 긍정 · 8개 외신 기준</div>
-      </div>
-    </div>
-
-    <div class="tabs">
-      <button class="tab active-all" onclick="filter('all',this)">전체</button>
-      <button class="tab" onclick="filter('positive',this)">긍정만</button>
-      <button class="tab" onclick="filter('negative',this)">부정만</button>
-    </div>
-
-    <div id="reviews">
-      <div class="review-card positive" data-sentiment="positive">
-        <div class="review-top">
-          <span class="review-source">Billboard</span>
-          <span class="sentiment-pill pill-pos">긍정</span>
-        </div>
-        <div class="review-headline">aespa's 'Whiplash' Is K-Pop's Most Ambitious Genre Experiment Yet</div>
-        <div class="review-body">메탈·EDM·팝을 혼합한 타이틀곡의 프로덕션 밀도를 높이 평가. "SM이 세계관 서사를 음악 언어로 번역하는 방식에서 진일보했다"며 K-pop 정규앨범의 새 기준점을 제시했다고 평가.</div>
-        <div class="review-meta">
-          <span class="review-artist">aespa · 《Whiplash》</span>
-          <span class="tag tag-purple">장르 실험</span>
-        </div>
-      </div>
-
-      <div class="review-card positive" data-sentiment="positive">
-        <div class="review-top">
-          <span class="review-source">Rolling Stone</span>
-          <span class="sentiment-pill pill-pos">긍정</span>
-        </div>
-        <div class="review-headline">SEVENTEEN Shows Why They're the Most Consistent Act in K-Pop</div>
-        <div class="review-body">전작 대비 감정선이 더 섬세해진 프로덕션을 조명. "팬덤 의존도가 높은 시장에서 음악 자체로 설득하는 드문 그룹"이라는 평가.</div>
-        <div class="review-meta">
-          <span class="review-artist">SEVENTEEN · 《Spill the Feels》</span>
-          <span class="tag tag-blue">프로덕션</span>
-        </div>
-      </div>
-
-      <div class="review-card negative" data-sentiment="negative">
-        <div class="review-top">
-          <span class="review-source">Pitchfork</span>
-          <span class="sentiment-pill pill-neg">부정</span>
-        </div>
-        <div class="review-headline">K-Pop's Genre Chaos Is Starting to Sound Like Noise</div>
-        <div class="review-body">"실험적 시도가 서사 없이 반복되면 결국 마케팅 언어가 된다"며 aespa를 포함한 4세대 그룹의 앨범 구성 파편화를 직접 지적. 장르 혼종화 피로를 산업 전반의 문제로 진단.</div>
-        <div class="review-meta">
-          <span class="review-artist">4세대 K-pop 전반</span>
-          <span class="tag tag-purple">장르 실험</span>
-        </div>
-      </div>
-
-      <div class="review-card positive" data-sentiment="positive">
-        <div class="review-top">
-          <span class="review-source">The Guardian</span>
-          <span class="sentiment-pill pill-pos">긍정</span>
-        </div>
-        <div class="review-headline">How BINI Became Southeast Asia's Biggest Pop Export</div>
-        <div class="review-body">"K-pop 문법을 로컬 정체성으로 재번역하는 데 가장 성공한 사례"라는 평가와 함께 P-pop 장르의 글로벌 확장 가능성을 긍정적으로 전망.</div>
-        <div class="review-meta">
-          <span class="review-artist">BINI · P-pop</span>
-          <span class="tag tag-blue">로컬라이제이션</span>
-        </div>
-      </div>
-
-      <div class="review-card negative" data-sentiment="negative">
-        <div class="review-top">
-          <span class="review-source">NME</span>
-          <span class="sentiment-pill pill-neg">부정</span>
-        </div>
-        <div class="review-headline">Are K-Pop Labels Running Out of Ideas?</div>
-        <div class="review-body">HYBE 산하 레이블들의 신보 콘셉트 유사성을 문제 삼음. 기념일 마케팅과 반복적 패턴이 "팬덤 소비를 극대화하되 음악적 진화는 뒷전"이라는 비판.</div>
-        <div class="review-meta">
-          <span class="review-artist">HYBE 레이블스 전반</span>
-          <span class="tag tag-purple">산업 비평</span>
-        </div>
-      </div>
-
-      <div class="review-card positive" data-sentiment="positive">
-        <div class="review-top">
-          <span class="review-source">Variety</span>
-          <span class="sentiment-pill pill-pos">긍정</span>
-        </div>
-        <div class="review-headline">K-Pop's Global Revenue Hit Record High in 2025, 2026 Looks Even Stronger</div>
-        <div class="review-body">SM·HYBE·YG 3사의 해외 매출 비중이 처음으로 국내를 넘어섰다는 데이터 제시. IP·굿즈·라이브 공연의 수익 비중 증가가 핵심 동인으로 분석됨.</div>
-        <div class="review-meta">
-          <span class="review-artist">K-pop 산업 전반</span>
-          <span class="tag tag-blue">산업 분석</span>
-        </div>
-      </div>
-
-      <div class="review-card negative" data-sentiment="negative">
-        <div class="review-top">
-          <span class="review-source">The Atlantic</span>
-          <span class="sentiment-pill pill-neg">부정</span>
-        </div>
-        <div class="review-headline">The Human Cost of the K-Pop Machine</div>
-        <div class="review-body">아이돌 트레이닝 시스템과 전속계약 구조에 대한 심층 비판. 복수의 소속사 계약 분쟁 사례를 인용하며 "산업의 외형 성장이 내부 구조 개선을 따라가지 못하고 있다"고 진단.</div>
-        <div class="review-meta">
-          <span class="review-artist">K-pop 산업 구조</span>
-          <span class="tag tag-purple">산업 비평</span>
-        </div>
-      </div>
-
-      <div class="review-card positive" data-sentiment="positive">
-        <div class="review-top">
-          <span class="review-source">Consequence of Sound</span>
-          <span class="sentiment-pill pill-pos">긍정</span>
-        </div>
-        <div class="review-headline">ILLIT's Debut Year Proved That Cute Pop Isn't Going Anywhere</div>
-        <div class="review-body">"Z세대의 아이러니한 귀여움 소비 트렌드와 맞아떨어진 완벽한 타이밍"으로 ILLIT 1년을 회고. 비주류 콘셉트의 주류 진입 사례로 조명.</div>
-        <div class="review-meta">
-          <span class="review-artist">ILLIT · 데뷔 1주년</span>
-          <span class="tag tag-teal">트렌드 분석</span>
-        </div>
-      </div>
-    </div>
+    <div class="section-label">외신 헤드라인</div>
+    
+  <div class="article-card">
+    <div class="article-source">Billboard · Fri, 10 Apr 2026</div>
+    <a class="article-title" href="https://www.billboard.com/music/country/ella-langley-dandelion-stream-it-now-1236218920/" target="_blank">Ella Langley Stays True to Her Roots on Introspective New Album ‘Dandelion’: Stream It Now</a>
   </div>
 
-  <!-- FOOTER -->
+  <div class="article-card">
+    <div class="article-source">Billboard · Fri, 10 Apr 2026</div>
+    <a class="article-title" href="https://www.billboard.com/pro/lil-baby-company-sues-wham-hemp-partner-thc-levels-e-coli/" target="_blank">Lil Baby’s Company Sues Biz Partner Over Illegal THC Levels and E. Coli in Hemp Products</a>
+  </div>
+
+  <div class="article-card">
+    <div class="article-source">Billboard · Thu, 09 Apr 2026</div>
+    <a class="article-title" href="https://www.billboard.com/lists/bts-setlist-every-song-arirang-tour-goyang-stadium/" target="_blank">BTS’ ‘ARIRANG’ Concert Setlist: Every Song From Night 1 at South Korea’s Goyang Stadium</a>
+  </div>
+
+  <div class="article-card">
+    <div class="article-source">Rolling Stone · Thu, 09 Apr 2026</div>
+    <a class="article-title" href="https://www.rollingstone.com/product-recommendations/style/chicago-bulls-air-jordan-t-shirt-shorts-sneakers-buy-online-1235544068/" target="_blank">Jordan Brand Nods to the Nineties With Chicago Bulls Capsule That’s Selling Out Online</a>
+  </div>
+
+  <div class="article-card">
+    <div class="article-source">Pitchfork · Wed, 08 Apr 2026</div>
+    <a class="article-title" href="https://pitchfork.com/news/nine-inch-nails-and-boys-noize-confirm-collaborative-album/" target="_blank">Nine Inch Nails and Boys Noize Confirm Collaborative Album</a>
+  </div>
+
+  <div class="article-card">
+    <div class="article-source">Pitchfork · Wed, 08 Apr 2026</div>
+    <a class="article-title" href="https://pitchfork.com/news/lindsey-buckinghams-stalker-charged-after-attacking-him-in-santa-monica/" target="_blank">Lindsey Buckingham’s Stalker Charged After Attacking Him in Santa Monica</a>
+  </div>
+
+  <div class="article-card">
+    <div class="article-source">Pitchfork · Tue, 07 Apr 2026</div>
+    <a class="article-title" href="https://pitchfork.com/news/isaiah-rashad-teases-return-with-its-been-awful/" target="_blank">Isaiah Rashad Teases Return With It’s Been Awful</a>
+  </div>
+
+  <div class="article-card">
+    <div class="article-source">NME · Thu, 09 Apr 2026</div>
+    <a class="article-title" href="https://www.nme.com/news/music/courteeners-god-bless-the-band-best-of-luckiest-man-alive-intimate-manchester-night-day-uk-arena-tour-tickets-3939359?utm_source=rss&utm_medium=rss&utm_campaign=courteeners-god-bless-the-band-best-of-luckiest-man-alive-intimate-manchester-night-day-uk-arena-tour-tickets" target="_blank">‘God Bless The Band’: Courteeners announce ‘best of’ album with single ‘Luckiest Man Alive’ and 2026 arena tour</a>
+  </div>
+
+  <div class="article-card">
+    <div class="article-source">NME · Thu, 09 Apr 2026</div>
+    <a class="article-title" href="https://www.nme.com/news/tv/ketamine-queen-sentenced-to-15-years-in-prison-over-matthew-perry-death-3939350?utm_source=rss&utm_medium=rss&utm_campaign=ketamine-queen-sentenced-to-15-years-in-prison-over-matthew-perry-death" target="_blank">‘Ketamine Queen’ sentenced to 15 years in prison over Matthew Perry death</a>
+  </div>
+
+  <div class="article-card">
+    <div class="article-source">The Guardian Music · Thu, 09 Apr 2026</div>
+    <a class="article-title" href="https://www.theguardian.com/music/2026/apr/09/afrika-bambaataa-hip-hop-pioneer-dies" target="_blank">Afrika Bambaataa, hip-hop pioneer, dies aged 67</a>
+  </div>
+
+  <div class="article-card">
+    <div class="article-source">The Guardian Music · Thu, 09 Apr 2026</div>
+    <a class="article-title" href="https://www.theguardian.com/music/2026/apr/09/my-new-band-believe-review-beautiful-ideas-burst-from-ex-black-midi-mans-lovable-debut-album" target="_blank">My New Band Believe review – beautiful ideas burst from ex-Black Midi man’s lovable debut album</a>
+  </div>
+
+  <div class="article-card">
+    <div class="article-source">The Guardian Music · Thu, 09 Apr 2026</div>
+    <a class="article-title" href="https://www.theguardian.com/music/2026/apr/09/belle-and-sebastian-review-albert-hall-tigermilk-stuart-murdoch" target="_blank">Belle and Sebastian review – joyful anniversary tour makes debut album brighter than ever</a>
+  </div>
+
+  <div class="article-card">
+    <div class="article-source">Variety · Fri, 10 Apr 2026</div>
+    <a class="article-title" href="https://variety.com/2026/film/news/behind-the-mask-sequel-leslie-vernon-cast-1236712587/" target="_blank">‘Behind the Mask’ Sequel Set After 20 Years, Reuniting Original Director and Cast for ‘The Return of Leslie Vernon’ (EXCLUSIVE)</a>
+  </div>
+
+  <div class="article-card">
+    <div class="article-source">Variety · Thu, 09 Apr 2026</div>
+    <a class="article-title" href="https://variety.com/2026/tv/news/disney-april-carretta-evp-communications-dana-walden-1236712999/" target="_blank">Disney Promotes April Carretta to EVP of Communications, Exec to Lead PR for Dana Walden</a>
+  </div>
+
+  <div class="article-card">
+    <div class="article-source">Variety · Thu, 09 Apr 2026</div>
+    <a class="article-title" href="https://variety.com/2026/music/news/daddy-yankee-latin-recording-academy-person-of-the-year-2026-1236710776/" target="_blank">Music Industry Moves: Laufey Re-Ups With Warner Chappell, Will Receive ASCAP’s Creative Voice Award; Miles Gersh Upped to EVP at Warner Records</a>
+  </div>
+  </div>
+
   <div class="footer">
     <span>K-pop Intelligence · 매일 자동 업데이트</span>
     <span><a href="../index.html">← 최신호</a> · <a href="../archive.html">아카이브</a></span>
   </div>
 
 </div>
-
-<script>
-function filter(type, btn) {
-  document.querySelectorAll('.tab').forEach(t => t.className = 'tab');
-  if (type === 'positive') btn.className = 'tab active-pos';
-  else if (type === 'negative') btn.className = 'tab active-neg';
-  else btn.className = 'tab active-all';
-  document.querySelectorAll('.review-card').forEach(card => {
-    card.style.display = (type === 'all' || card.dataset.sentiment === type) ? '' : 'none';
-  });
-}
-</script>
 </body>
 </html>
