@@ -2,7 +2,7 @@
 K-pop Intelligence Newsletter Generator
 매일 GitHub Actions에서 자동 실행됩니다.
 
-필요한 환경변수 (GitHub Secrets에 설정):
+필요한 환경변수 (GitHub Secrets):
   SPOTIFY_CLIENT_ID
   SPOTIFY_CLIENT_SECRET
   YOUTUBE_API_KEY
@@ -23,53 +23,33 @@ DAY_KO = ["월", "화", "수", "목", "금", "토", "일"][datetime.date.today()
 OUTPUT_DIR = Path("newsletters")
 OUTPUT_DIR.mkdir(exist_ok=True)
 
-# ── 팔로우할 아티스트 (Spotify Artist ID) ──
-# Artist ID 찾는 법: Spotify에서 아티스트 페이지 → 공유 → 링크 복사
-# https://open.spotify.com/artist/[여기가 ID]
+# 팔로우할 아티스트 (Spotify Artist ID)
+# Artist ID: Spotify에서 아티스트 페이지 → 공유 → 링크의 /artist/ 뒷부분
 ARTISTS = {
-    "aespa":       "2cnMpRsRX83sFl96xKXQ1",
-    "SEVENTEEN":   "7nqOGox5dQiUgmxGUCjkjh",
-    "ILLIT":       "3GjN0Vc5AkRBGAMuRXhaDI",
-    "NewJeans":    "2NZVRjbzIDfuSE6ESWJvvU",
-    "BINI":        "6MdRFpKXAMbBr88b1T3UM7",
-    "NMIXX":       "1tmxpdDbyKoCOXlSb7MGFU",
-    "LE SSERAFIM": "6HvZYsbFfjnjFrWF950C9d",
-    # 아티스트 추가하려면 여기에 계속 붙여넣으세요
-    # "아티스트명": "Spotify Artist ID",
+    "aespa":        "2cnMpRsRX83sFl96xKXQ1",
+    "SEVENTEEN":    "7nqOGox5dQiUgmxGUCjkjh",
+    "ILLIT":        "3GjN0Vc5AkRBGAMuRXhaDI",
+    "NewJeans":     "2NZVRjbzIDfuSE6ESWJvvU",
+    "BINI":         "6MdRFpKXAMbBr88b1T3UM7",
+    "NMIXX":        "1tmxpdDbyKoCOXlSb7MGFU",
+    "LE SSERAFIM":  "6HvZYsbFfjnjFrWF950C9d",
+    "IVE":          "6RHTUrRF63xao58xh9FXYJ",
+    "TWICE":        "7n2Ycct7Beij7Dj7meI4X0",
+    "Stray Kids":   "2b4LTnUMBB34DWnFMKVEDP",
+    "EXO":          "3cjEqqElzeQVFFRNBcHISM",
+    "NCT 127":      "0h4tLJGFQuCNKqk8zTtGlC",
+    "BLACKPINK":    "41MozSoPIsD1dJM0CLPjZF",
+    "BTS":          "3Nrfpe0tUJi4K4DXYWgMUX",
+    "GOT7":         "3gIRvgZssIb9aiirIg0nI3",
+    "ENHYPEN":      "0bktO5A1yBhMVTXXbQEjxW",
+    "TXT":          "4vGrte8FDu062Ntj0RsPiZ",
+    "ATEEZ":        "1Cd373x7Nf6QEHBHB7DNVG",
+    # 아티스트 추가: "이름": "Spotify Artist ID"
 }
-
-# ── MV 조회수 트래킹 (YouTube Video ID) ──
-# Video ID 찾는 법: 유튜브 MV 주소 → ?v= 뒤의 값
-# https://www.youtube.com/watch?v=[여기가 ID]
-MV_TRACKING = [
-    {"artist": "BLACKPINK", "title": "DDU-DU DDU-DU", "video_id": "IHNzOHi8sJs"},
-    {"artist": "BTS",       "title": "Dynamite",       "video_id": "gdZLi9oWNZg"},
-    {"artist": "ILLIT",     "title": "Magnetic",       "video_id": "JNTnhBmERQk"},
-    {"artist": "SEVENTEEN", "title": "MAESTRO",        "video_id": "tZj8ov1K7Zs"},
-    {"artist": "aespa",     "title": "Whiplash",       "video_id": "wq7JCJpGSe0"},
-    # MV 추가하려면 여기에 계속 붙여넣으세요
-    # {"artist": "아티스트명", "title": "곡제목", "video_id": "유튜브ID"},
-]
-
-# ── 외신 RSS 피드 ──
-RSS_SOURCES = [
-    {"name": "Billboard",          "url": "https://www.billboard.com/feed/"},
-    {"name": "Rolling Stone",      "url": "https://www.rollingstone.com/feed/"},
-    {"name": "Pitchfork",          "url": "https://pitchfork.com/rss/news/"},
-    {"name": "NME",                "url": "https://www.nme.com/feed/"},
-    {"name": "The Guardian Music", "url": "https://www.theguardian.com/music/rss"},
-    {"name": "Variety",            "url": "https://variety.com/feed/"},
-]
-
-RSS_KEYWORDS = [
-    "k-pop", "kpop", "k pop",
-    "aespa", "bts", "blackpink", "seventeen", "newjeans",
-    "illit", "bini", "nmixx", "le sserafim", "stray kids", "ive", "twice",
-]
 
 
 # ────────────────────────────────────────────
-# 1. Spotify: 신보 감지
+# 1. Spotify 토큰
 # ────────────────────────────────────────────
 
 def get_spotify_token() -> str:
@@ -83,164 +63,207 @@ def get_spotify_token() -> str:
     return r.json()["access_token"]
 
 
-def fetch_new_releases(token: str, days: int = 30) -> list[dict]:
-    headers = {"Authorization": f"Bearer {token}"}
-    cutoff  = datetime.date.today() - datetime.timedelta(days=days)
-    releases = []
+# ────────────────────────────────────────────
+# 2. 신보 & 컴백 일정
+# ────────────────────────────────────────────
+
+def fetch_releases(token: str) -> tuple[list[dict], list[dict]]:
+    """
+    최근 30일 발매 → recent (신보 발매 소식)
+    향후 60일 예정 → upcoming (컴백 일정)
+    """
+    headers  = {"Authorization": f"Bearer {token}"}
+    today    = datetime.date.today()
+    past_30  = today - datetime.timedelta(days=30)
+    future_60= today + datetime.timedelta(days=60)
+
+    recent   = []
+    upcoming = []
+    seen     = set()
 
     for artist_name, artist_id in ARTISTS.items():
         try:
             r = requests.get(
                 f"https://api.spotify.com/v1/artists/{artist_id}/albums",
                 headers=headers,
-                params={"album_type": "album,single,ep", "limit": 5, "market": "KR"},
+                params={"album_type": "album,single,ep", "limit": 10, "market": "KR"},
                 timeout=10,
             )
             for album in r.json().get("items", []):
-                raw_date = album.get("release_date", "")
+                raw = album.get("release_date", "")
                 try:
-                    rel_date = datetime.date.fromisoformat(raw_date[:10])
+                    rel_date = datetime.date.fromisoformat(raw[:10])
                 except ValueError:
                     continue
-                if rel_date >= cutoff:
-                    releases.append({
-                        "artist":       artist_name,
-                        "title":        album["name"],
-                        "type":         album["album_type"],
-                        "release_date": raw_date[:10],
-                        "spotify_url":  album["external_urls"]["spotify"],
-                    })
+
+                key = (artist_name, album["name"])
+                if key in seen:
+                    continue
+                seen.add(key)
+
+                item = {
+                    "artist":       artist_name,
+                    "title":        album["name"],
+                    "type":         album["album_type"],
+                    "release_date": raw[:10],
+                    "spotify_url":  album["external_urls"]["spotify"],
+                    "image_url":    album["images"][0]["url"] if album["images"] else "",
+                }
+
+                if past_30 <= rel_date <= today:
+                    recent.append(item)
+                elif today < rel_date <= future_60:
+                    upcoming.append(item)
+
         except Exception as e:
             print(f"  Spotify error ({artist_name}): {e}")
 
-    releases.sort(key=lambda x: x["release_date"], reverse=True)
-
-    # 중복 제거
-    seen, unique = set(), []
-    for r in releases:
-        key = (r["artist"], r["title"])
-        if key not in seen:
-            seen.add(key)
-            unique.append(r)
-    return unique
+    recent.sort(key=lambda x: x["release_date"], reverse=True)
+    upcoming.sort(key=lambda x: x["release_date"])
+    return recent, upcoming
 
 
 # ────────────────────────────────────────────
-# 2. YouTube: MV 조회수
+# 3. YouTube: 최근 컴백 아티스트 MV 조회수
 # ────────────────────────────────────────────
 
-def fetch_mv_views() -> list[dict]:
-    api_key   = os.environ["YOUTUBE_API_KEY"]
-    video_ids = ",".join(mv["video_id"] for mv in MV_TRACKING)
-    try:
-        r = requests.get(
-            "https://www.googleapis.com/youtube/v3/videos",
-            params={"part": "statistics", "id": video_ids, "key": api_key},
-            timeout=10,
-        )
-        stats = {item["id"]: item["statistics"] for item in r.json().get("items", [])}
-    except Exception as e:
-        print(f"  YouTube error: {e}")
-        stats = {}
+def fetch_recent_mv_views(recent_releases: list[dict]) -> list[dict]:
+    """최근 발매된 아티스트의 MV를 YouTube에서 검색해서 조회수 가져오기"""
+    api_key = os.environ["YOUTUBE_API_KEY"]
 
-    results = []
-    for mv in MV_TRACKING:
-        count = int(stats.get(mv["video_id"], {}).get("viewCount", 0))
-        results.append({**mv, "views": count})
+    # 최근 발매 아티스트 (중복 제거, 최대 10팀)
+    artists_seen = []
+    for r in recent_releases:
+        if r["artist"] not in artists_seen:
+            artists_seen.append(r["artist"])
+        if len(artists_seen) >= 10:
+            break
 
-    results.sort(key=lambda x: x["views"], reverse=True)
-    return results
+    mv_results = []
+
+    for release in recent_releases:
+        artist = release["artist"]
+        title  = release["title"]
+
+        # YouTube Search API로 MV 검색
+        try:
+            search_q = f"{artist} {title} MV official"
+            r = requests.get(
+                "https://www.googleapis.com/youtube/v3/search",
+                params={
+                    "part":       "snippet",
+                    "q":          search_q,
+                    "type":       "video",
+                    "maxResults": 1,
+                    "key":        api_key,
+                },
+                timeout=10,
+            )
+            items = r.json().get("items", [])
+            if not items:
+                continue
+            video_id = items[0]["id"]["videoId"]
+
+            # 조회수 가져오기
+            stats_r = requests.get(
+                "https://www.googleapis.com/youtube/v3/videos",
+                params={"part": "statistics", "id": video_id, "key": api_key},
+                timeout=10,
+            )
+            stats_items = stats_r.json().get("items", [])
+            if not stats_items:
+                continue
+
+            view_count = int(stats_items[0]["statistics"].get("viewCount", 0))
+            mv_results.append({
+                "artist":       artist,
+                "title":        title,
+                "video_id":     video_id,
+                "views":        view_count,
+                "release_date": release["release_date"],
+            })
+
+        except Exception as e:
+            print(f"  YouTube search error ({artist} - {title}): {e}")
+
+    mv_results.sort(key=lambda x: x["views"], reverse=True)
+    return mv_results[:10]
 
 
 def fmt_views(n: int) -> str:
     if n >= 1_000_000_000:
         return f"{n / 1_000_000_000:.2f}B"
     if n >= 1_000_000:
-        return f"{n / 1_000_000:.0f}M"
-    return f"{n:,}"
+        return f"{n / 1_000_000:.1f}M"
+    if n >= 1_000:
+        return f"{n / 1_000:.0f}K"
+    return str(n)
 
 
 # ────────────────────────────────────────────
-# 3. RSS: 외신 헤드라인 수집 (원문 제목 + 링크만)
+# 4. 서문 자동 생성 (API 없이)
 # ────────────────────────────────────────────
 
-def fetch_rss_articles(max_per_source: int = 3) -> list[dict]:
-    try:
-        import feedparser
-    except ImportError:
-        print("  feedparser 없음. pip install feedparser 실행하세요.")
-        return []
+def build_intro(recent: list[dict], upcoming: list[dict], mv_data: list[dict]) -> str:
+    lines = []
 
-    articles = []
-    for src in RSS_SOURCES:
-        try:
-            feed  = feedparser.parse(src["url"])
-            count = 0
-            for entry in feed.entries:
-                if count >= max_per_source:
-                    break
-                combined = (entry.get("title", "") + " " + entry.get("summary", "")).lower()
-                if any(kw in combined for kw in RSS_KEYWORDS):
-                    articles.append({
-                        "source": src["name"],
-                        "title":  entry.get("title", "").strip(),
-                        "url":    entry.get("link", ""),
-                        "date":   entry.get("published", "")[:16],
-                    })
-                    count += 1
-        except Exception as e:
-            print(f"  RSS error ({src['name']}): {e}")
+    if recent:
+        names = ", ".join(
+            f"{r['artist']} 《{r['title']}》"
+            for r in recent[:3]
+        )
+        suffix = f" 등 총 {len(recent)}건" if len(recent) > 3 else ""
+        lines.append(f"최근 30일간 {names}{suffix}이 발매됐습니다.")
+    else:
+        lines.append("최근 30일간 새로운 발매 소식은 없습니다.")
 
-    return articles
+    if upcoming:
+        next_cb = upcoming[0]
+        rel     = next_cb["release_date"]
+        d_day   = (datetime.date.fromisoformat(rel) - datetime.date.today()).days
+        lines.append(
+            f"다가오는 컴백으로는 {next_cb['artist']}의 《{next_cb['title']}》 발매가 "
+            f"D-{d_day}로 예정되어 있습니다."
+        )
 
+    if mv_data:
+        top = mv_data[0]
+        lines.append(
+            f"최근 컴백 MV 중 {top['artist']}의 〈{top['title']}〉이 "
+            f"{fmt_views(top['views'])} 조회수로 선두를 달리고 있습니다."
+        )
 
-# ────────────────────────────────────────────
-# 4. 인트로 텍스트 (API 없이 자동 생성)
-# ────────────────────────────────────────────
-
-def build_intro(releases: list[dict], articles: list[dict]) -> str:
-    parts = []
-    if releases:
-        names = ", ".join(f"{r['artist']} 《{r['title']}》" for r in releases[:3])
-        suffix = f" 외 {len(releases)-3}건" if len(releases) > 3 else ""
-        parts.append(f"이번 주 주목할 신보: {names}{suffix}.")
-    if articles:
-        parts.append(f"외신에서는 총 {len(articles)}건의 K-pop 관련 기사가 수집됐습니다.")
-    if not parts:
-        parts.append("오늘은 새로운 신보 소식이 없습니다.")
-    parts.append("아래에서 신보 발매·MV 조회수·외신 헤드라인을 확인하세요.")
-    return " ".join(parts)
+    lines.append("엔터산업 주요 동향을 아래에서 확인하세요.")
+    return " ".join(lines)
 
 
 # ────────────────────────────────────────────
 # 5. HTML 렌더링
 # ────────────────────────────────────────────
 
-def build_release_cards(releases: list[dict]) -> str:
-    if not releases:
-        return "<p style='color:#9C9B96;font-size:13px;padding:1rem 0;'>최근 30일 내 신보 없음</p>"
+TYPE_MAP  = {"album": "정규앨범", "single": "싱글", "ep": "EP", "compilation": "컴필레이션"}
+TYPE_TAG  = {"album": "tag-purple", "single": "tag-teal", "ep": "tag-blue", "compilation": "tag-amber"}
+BAR_COLORS = ["#D4537E", "#378ADD", "#EF9F27", "#1D9E75", "#7F77DD",
+               "#D85A30", "#639922", "#BA7517", "#E24B4A", "#1D9E75"]
 
-    type_map = {"album": "정규앨범", "single": "싱글", "ep": "EP", "compilation": "컴필레이션"}
-    tag_map  = {"album": "tag-purple", "single": "tag-teal", "ep": "tag-blue", "compilation": "tag-amber"}
 
+def build_release_cards(recent: list[dict]) -> str:
+    if not recent:
+        return "<p class='empty'>최근 30일 내 신보 없음</p>"
     cards = []
-    for r in releases:
-        type_label = type_map.get(r["type"], r["type"].upper())
-        tag_cls    = tag_map.get(r["type"], "tag-pink")
+    for r in recent:
+        tl  = TYPE_MAP.get(r["type"], r["type"].upper())
+        tc  = TYPE_TAG.get(r["type"], "tag-pink")
         cards.append(f"""
   <div class="card">
     <div class="card-row">
       <div class="card-icon">🎵</div>
       <div class="card-body">
         <div class="card-title">{r['artist']} — 《{r['title']}》</div>
-        <div class="card-source">발매일 {r['release_date']} · {type_label}</div>
+        <div class="card-source">발매일 {r['release_date']} · {tl}</div>
         <div class="tags" style="margin-top:8px;">
-          <span class="tag {tag_cls}">{type_label}</span>
-          <a href="{r['spotify_url']}" target="_blank"
-             style="font-size:11px;font-weight:500;color:#0D6B52;text-decoration:none;
-                    padding:2px 9px;background:#E3F7F1;border-radius:99px;">
-            Spotify →
-          </a>
+          <span class="tag {tc}">{tl}</span>
+          <a href="{r['spotify_url']}" target="_blank" class="tag tag-spotify">Spotify →</a>
         </div>
       </div>
     </div>
@@ -248,44 +271,59 @@ def build_release_cards(releases: list[dict]) -> str:
     return "\n".join(cards)
 
 
+def build_comeback_list(upcoming: list[dict]) -> str:
+    if not upcoming:
+        return "<p class='empty'>예정된 컴백 없음</p>"
+    today = datetime.date.today()
+    items = []
+    for u in upcoming[:8]:
+        rel    = datetime.date.fromisoformat(u["release_date"])
+        d_day  = (rel - today).days
+        tl     = TYPE_MAP.get(u["type"], u["type"].upper())
+        d_label= f"D-{d_day}" if d_day > 0 else "오늘"
+        badge_cls = "status-soon" if d_day <= 7 else "status-upcoming"
+        dot_color = "#378ADD" if d_day <= 7 else "#EF9F27"
+        items.append(f"""
+    <div class="comeback-item">
+      <div class="cb-date">{u['release_date'][5:]}</div>
+      <div class="cb-dot" style="background:{dot_color};"></div>
+      <div class="cb-info">
+        <div class="cb-artist">{u['artist']}</div>
+        <div class="cb-album">《{u['title']}》 {tl}</div>
+      </div>
+      <span class="status-badge {badge_cls}">{d_label}</span>
+    </div>""")
+    return "\n".join(items)
+
+
 def build_mv_rows(mv_data: list[dict]) -> str:
     if not mv_data:
-        return "<p style='color:#9C9B96;font-size:13px;'>조회수 데이터 없음</p>"
-    max_views = mv_data[0]["views"] or 1
-    colors    = ["#D4537E", "#378ADD", "#EF9F27", "#1D9E75", "#7F77DD"]
-    rows = []
+        return "<p class='empty'>MV 데이터 없음</p>"
+    max_v = mv_data[0]["views"] or 1
+    rows  = []
     for i, mv in enumerate(mv_data):
-        pct   = int(mv["views"] / max_views * 100)
-        color = colors[i % len(colors)]
+        pct   = int(mv["views"] / max_v * 100)
+        color = BAR_COLORS[i % len(BAR_COLORS)]
+        yt_url= f"https://www.youtube.com/watch?v={mv['video_id']}"
         rows.append(f"""
   <div class="mv-row">
     <div class="mv-rank">{i+1}</div>
-    <div class="mv-name">{mv['artist']} — {mv['title']}</div>
+    <div class="mv-name">
+      <a href="{yt_url}" target="_blank" style="color:inherit;text-decoration:none;">
+        {mv['artist']} — {mv['title']}
+      </a>
+    </div>
     <div class="mv-track"><div class="mv-fill" style="width:{pct}%;background:{color};"></div></div>
     <div class="mv-val">{fmt_views(mv['views'])}</div>
   </div>""")
     return "\n".join(rows)
 
 
-def build_article_cards(articles: list[dict]) -> str:
-    if not articles:
-        return "<p style='color:#9C9B96;font-size:13px;'>오늘 수집된 외신 기사 없음</p>"
-    cards = []
-    for a in articles:
-        date_str = f" · {a['date']}" if a["date"] else ""
-        cards.append(f"""
-  <div class="article-card">
-    <div class="article-source">{a['source']}{date_str}</div>
-    <a class="article-title" href="{a['url']}" target="_blank">{a['title']}</a>
-  </div>""")
-    return "\n".join(cards)
-
-
-def render_html(releases, mv_data, articles) -> str:
-    intro         = build_intro(releases, articles)
-    release_cards = build_release_cards(releases)
-    mv_rows       = build_mv_rows(mv_data)
-    article_cards = build_article_cards(articles)
+def render_html(recent, upcoming, mv_data) -> str:
+    intro          = build_intro(recent, upcoming, mv_data)
+    release_cards  = build_release_cards(recent)
+    comeback_list  = build_comeback_list(upcoming)
+    mv_rows        = build_mv_rows(mv_data)
 
     return f"""<!DOCTYPE html>
 <html lang="ko">
@@ -310,6 +348,8 @@ def render_html(releases, mv_data, articles) -> str:
   }}
   body {{ font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text-primary); font-size:15px; line-height:1.7; }}
   .page {{ max-width:680px; margin:0 auto; padding:0 1.25rem 4rem; }}
+
+  /* 헤더 */
   .header {{ padding:2.5rem 0 2rem; border-bottom:1px solid var(--border-strong); margin-bottom:2rem; }}
   .logo-row {{ display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem; }}
   .logo {{ font-family:'DM Serif Display',serif; font-size:13px; letter-spacing:.18em; text-transform:uppercase; color:var(--text-muted); }}
@@ -317,9 +357,16 @@ def render_html(releases, mv_data, articles) -> str:
   .header h1 {{ font-family:'DM Serif Display',serif; font-size:34px; font-weight:400; line-height:1.2; margin-bottom:.5rem; }}
   .header h1 em {{ font-style:italic; color:var(--text-secondary); }}
   .header-sub {{ font-size:13px; color:var(--text-muted); }}
-  .intro {{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.25rem 1.5rem; margin-bottom:2.5rem; font-size:14px; color:var(--text-secondary); line-height:1.75; }}
+
+  /* 서문 */
+  .intro {{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.25rem 1.5rem; margin-bottom:2.5rem; font-size:14px; color:var(--text-secondary); line-height:1.8; }}
+
+  /* 섹션 */
   .section {{ margin-bottom:2.5rem; }}
   .section-label {{ font-size:10px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--text-muted); padding-bottom:.75rem; border-bottom:1px solid var(--border); margin-bottom:1rem; }}
+  .empty {{ color:var(--text-muted); font-size:13px; padding:.5rem 0; }}
+
+  /* 카드 */
   .card {{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.1rem 1.25rem; margin-bottom:.6rem; }}
   .card-row {{ display:flex; gap:14px; align-items:flex-start; }}
   .card-icon {{ width:52px; height:52px; border-radius:10px; background:var(--bg); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; border:1px solid var(--border); }}
@@ -327,30 +374,44 @@ def render_html(releases, mv_data, articles) -> str:
   .card-title {{ font-size:14px; font-weight:500; margin-bottom:3px; }}
   .card-source {{ font-size:11px; color:var(--text-muted); }}
   .tags {{ display:flex; flex-wrap:wrap; gap:5px; }}
-  .tag {{ font-size:11px; font-weight:500; padding:2px 9px; border-radius:99px; }}
+  .tag {{ font-size:11px; font-weight:500; padding:2px 9px; border-radius:99px; text-decoration:none; }}
   .tag-purple {{ background:var(--purple-bg); color:var(--purple); }}
   .tag-blue   {{ background:var(--blue-bg);   color:var(--blue); }}
   .tag-pink   {{ background:var(--pink-bg);   color:var(--pink); }}
   .tag-teal   {{ background:var(--teal-bg);   color:var(--teal); }}
   .tag-amber  {{ background:var(--amber-bg);  color:var(--amber); }}
+  .tag-spotify {{ background:#E3F7F1; color:#0D6B52; }}
+
+  /* 컴백 일정 */
+  .comeback-list {{ background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; }}
+  .comeback-item {{ display:flex; align-items:center; gap:14px; padding:.85rem 1.25rem; border-bottom:1px solid var(--border); }}
+  .comeback-item:last-child {{ border-bottom:none; }}
+  .cb-date {{ font-size:12px; font-weight:500; color:var(--text-muted); min-width:40px; font-variant-numeric:tabular-nums; }}
+  .cb-dot {{ width:8px; height:8px; border-radius:50%; flex-shrink:0; }}
+  .cb-info {{ flex:1; min-width:0; }}
+  .cb-artist {{ font-size:14px; font-weight:500; }}
+  .cb-album {{ font-size:12px; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }}
+  .status-badge {{ font-size:10px; font-weight:500; padding:3px 9px; border-radius:99px; white-space:nowrap; }}
+  .status-soon     {{ background:var(--blue-bg);  color:var(--blue); }}
+  .status-upcoming {{ background:var(--amber-bg); color:var(--amber); }}
+
+  /* MV 차트 */
   .mv-card {{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.1rem 1.25rem; }}
   .mv-row {{ display:flex; align-items:center; gap:12px; margin-bottom:10px; }}
   .mv-row:last-of-type {{ margin-bottom:0; }}
   .mv-rank {{ font-size:11px; font-weight:500; color:var(--text-muted); min-width:16px; text-align:right; }}
-  .mv-name {{ font-size:13px; color:var(--text-secondary); min-width:130px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }}
+  .mv-name {{ font-size:13px; color:var(--text-secondary); min-width:160px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }}
   .mv-track {{ flex:1; height:5px; background:var(--bg); border-radius:99px; overflow:hidden; }}
   .mv-fill {{ height:100%; border-radius:99px; }}
-  .mv-val {{ font-size:12px; font-weight:500; color:var(--text-primary); min-width:40px; text-align:right; }}
+  .mv-val {{ font-size:12px; font-weight:500; color:var(--text-primary); min-width:44px; text-align:right; }}
   .mv-note {{ font-size:11px; color:var(--text-muted); margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }}
-  .article-card {{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1rem 1.25rem; margin-bottom:.6rem; }}
-  .article-source {{ font-size:10px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--text-muted); margin-bottom:5px; }}
-  .article-title {{ font-size:14px; font-weight:500; color:var(--text-primary); text-decoration:none; line-height:1.45; display:block; }}
-  .article-title:hover {{ color:var(--purple); }}
+
+  /* 푸터 */
   .footer {{ border-top:1px solid var(--border); padding-top:1.5rem; margin-top:1rem; font-size:12px; color:var(--text-muted); display:flex; align-items:center; justify-content:space-between; }}
   .footer a {{ color:var(--text-muted); text-decoration:none; }}
   @media(max-width:540px) {{
     .header h1 {{ font-size:26px; }}
-    .mv-name {{ min-width:90px; }}
+    .mv-name {{ min-width:100px; }}
     .footer {{ flex-direction:column; gap:8px; text-align:center; }}
   }}
 </style>
@@ -375,16 +436,18 @@ def render_html(releases, mv_data, articles) -> str:
   </div>
 
   <div class="section">
-    <div class="section-label">주요 MV 조회수</div>
-    <div class="mv-card">
-      {mv_rows}
-      <div class="mv-note">* 유튜브 기준 누적 조회수 · 매일 오전 8시 자동 업데이트</div>
+    <div class="section-label">컴백 일정 (향후 60일)</div>
+    <div class="comeback-list">
+      {comeback_list}
     </div>
   </div>
 
   <div class="section">
-    <div class="section-label">외신 헤드라인</div>
-    {article_cards}
+    <div class="section-label">최근 컴백 MV 조회수 순위</div>
+    <div class="mv-card">
+      {mv_rows}
+      <div class="mv-note">* 최근 30일 내 발매 MV 기준 · 유튜브 조회수 · 매일 오전 8시 자동 업데이트</div>
+    </div>
   </div>
 
   <div class="footer">
@@ -404,20 +467,17 @@ def render_html(releases, mv_data, articles) -> str:
 def main():
     print(f"[{TODAY}] K-pop Intelligence 생성 시작...")
 
-    print("  → Spotify 신보 조회 중...")
-    token    = get_spotify_token()
-    releases = fetch_new_releases(token, days=30)
-    print(f"     {len(releases)}개 신보 발견")
+    print("  → Spotify 신보/컴백 조회 중...")
+    token          = get_spotify_token()
+    recent, upcoming = fetch_releases(token)
+    print(f"     최근 발매 {len(recent)}건 / 예정 {len(upcoming)}건")
 
-    print("  → YouTube MV 조회수 수집 중...")
-    mv_data = fetch_mv_views()
-
-    print("  → 외신 RSS 수집 중...")
-    articles = fetch_rss_articles(max_per_source=3)
-    print(f"     {len(articles)}개 기사 수집")
+    print("  → YouTube 최근 컴백 MV 조회수 수집 중...")
+    mv_data = fetch_recent_mv_views(recent)
+    print(f"     MV {len(mv_data)}건 수집")
 
     print("  → HTML 렌더링 중...")
-    html = render_html(releases, mv_data, articles)
+    html = render_html(recent, upcoming, mv_data)
 
     output_path = OUTPUT_DIR / f"{TODAY}.html"
     output_path.write_text(html, encoding="utf-8")
