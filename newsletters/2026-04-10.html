@@ -21,8 +21,6 @@
   }
   body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text-primary); font-size:15px; line-height:1.7; }
   .page { max-width:680px; margin:0 auto; padding:0 1.25rem 4rem; }
-
-  /* 헤더 */
   .header { padding:2.5rem 0 2rem; border-bottom:1px solid var(--border-strong); margin-bottom:2rem; }
   .logo-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem; }
   .logo { font-family:'DM Serif Display',serif; font-size:13px; letter-spacing:.18em; text-transform:uppercase; color:var(--text-muted); }
@@ -30,68 +28,66 @@
   .header h1 { font-family:'DM Serif Display',serif; font-size:34px; font-weight:400; line-height:1.2; margin-bottom:.5rem; }
   .header h1 em { font-style:italic; color:var(--text-secondary); }
   .header-sub { font-size:13px; color:var(--text-muted); }
-
-  /* 서문 */
   .intro { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.25rem 1.5rem; margin-bottom:2.5rem; font-size:14px; color:var(--text-secondary); line-height:1.8; }
-
-  /* 섹션 */
   .section { margin-bottom:2.5rem; }
   .section-label { font-size:10px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--text-muted); padding-bottom:.75rem; border-bottom:1px solid var(--border); margin-bottom:1rem; }
   .empty { color:var(--text-muted); font-size:13px; padding:.5rem 0; }
-
-  /* 카드 */
   .card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.1rem 1.25rem; margin-bottom:.6rem; }
   .card-row { display:flex; gap:14px; align-items:flex-start; }
   .card-icon { width:52px; height:52px; border-radius:10px; background:var(--bg); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; border:1px solid var(--border); }
   .card-body { flex:1; min-width:0; }
   .card-title { font-size:14px; font-weight:500; margin-bottom:3px; }
-  .card-source { font-size:11px; color:var(--text-muted); }
+  .card-source { font-size:11px; color:var(--text-muted); margin-bottom:2px; }
   .tags { display:flex; flex-wrap:wrap; gap:5px; }
-  .tag { font-size:11px; font-weight:500; padding:2px 9px; border-radius:99px; text-decoration:none; }
+  .tag { font-size:11px; font-weight:500; padding:2px 9px; border-radius:99px; text-decoration:none; display:inline-block; }
   .tag-purple { background:var(--purple-bg); color:var(--purple); }
   .tag-blue   { background:var(--blue-bg);   color:var(--blue); }
   .tag-pink   { background:var(--pink-bg);   color:var(--pink); }
   .tag-teal   { background:var(--teal-bg);   color:var(--teal); }
   .tag-amber  { background:var(--amber-bg);  color:var(--amber); }
+  .tag-gray   { background:#EDECE8; color:#5C5B57; }
   .tag-spotify { background:#E3F7F1; color:#0D6B52; }
-
-  /* 컴백 일정 */
-  .comeback-list { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
-  .comeback-item { display:flex; align-items:center; gap:14px; padding:.85rem 1.25rem; border-bottom:1px solid var(--border); }
-  .comeback-item:last-child { border-bottom:none; }
-  .cb-date { font-size:12px; font-weight:500; color:var(--text-muted); min-width:40px; font-variant-numeric:tabular-nums; }
-  .cb-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
-  .cb-info { flex:1; min-width:0; }
-  .cb-artist { font-size:14px; font-weight:500; }
-  .cb-album { font-size:12px; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .status-badge { font-size:10px; font-weight:500; padding:3px 9px; border-radius:99px; white-space:nowrap; }
-  .status-soon     { background:var(--blue-bg);  color:var(--blue); }
-  .status-upcoming { background:var(--amber-bg); color:var(--amber); }
-
-  /* MV 차트 */
   .mv-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.1rem 1.25rem; }
-  .mv-row { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+  .mv-row { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
   .mv-row:last-of-type { margin-bottom:0; }
   .mv-rank { font-size:11px; font-weight:500; color:var(--text-muted); min-width:16px; text-align:right; }
-  .mv-name { font-size:13px; color:var(--text-secondary); min-width:160px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .mv-track { flex:1; height:5px; background:var(--bg); border-radius:99px; overflow:hidden; }
+  .mv-name { font-size:13px; color:var(--text-secondary); flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .mv-track { width:100px; height:5px; background:var(--bg); border-radius:99px; overflow:hidden; flex-shrink:0; }
   .mv-fill { height:100%; border-radius:99px; }
   .mv-val { font-size:12px; font-weight:500; color:var(--text-primary); min-width:44px; text-align:right; }
   .mv-note { font-size:11px; color:var(--text-muted); margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
-
-  /* 푸터 */
+  .chart-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.1rem 1.25rem; }
+  .chart-row { display:flex; align-items:center; gap:12px; padding:.6rem 0; border-bottom:1px solid var(--border); }
+  .chart-row:last-child { border-bottom:none; }
+  .chart-rank { font-size:13px; font-weight:500; color:var(--text-muted); min-width:20px; text-align:center; }
+  .chart-info { flex:1; min-width:0; }
+  .chart-title { font-size:14px; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .chart-artist { font-size:12px; color:var(--text-muted); }
+  .chart-bar-wrap { width:80px; flex-shrink:0; }
+  .chart-bar-track { height:4px; background:var(--bg); border-radius:99px; overflow:hidden; }
+  .chart-bar-fill { height:100%; border-radius:99px; }
+  .rank-badge { font-size:10px; font-weight:500; padding:1px 6px; border-radius:99px; margin-left:5px; vertical-align:middle; }
+  .rank-1 { background:#FDF0D8; color:#7A4B08; }
+  .rank-2 { background:#EDECE8; color:#5C5B57; }
+  .rank-3 { background:#FAEAF2; color:#9A2E5E; }
+  .news-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1rem 1.25rem; margin-bottom:.6rem; }
+  .news-meta { font-size:10px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--text-muted); margin-bottom:4px; }
+  .news-title { font-size:14px; font-weight:500; color:var(--text-primary); text-decoration:none; line-height:1.45; display:block; margin-bottom:5px; }
+  .news-title:hover { color:var(--purple); }
+  .news-summary { font-size:12px; color:var(--text-secondary); line-height:1.55; }
+  .chart-source { font-size:11px; color:var(--text-muted); margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
   .footer { border-top:1px solid var(--border); padding-top:1.5rem; margin-top:1rem; font-size:12px; color:var(--text-muted); display:flex; align-items:center; justify-content:space-between; }
   .footer a { color:var(--text-muted); text-decoration:none; }
   @media(max-width:540px) {
     .header h1 { font-size:26px; }
-    .mv-name { min-width:100px; }
+    .mv-track { width:60px; }
+    .chart-bar-wrap { width:50px; }
     .footer { flex-direction:column; gap:8px; text-align:center; }
   }
 </style>
 </head>
 <body>
 <div class="page">
-
   <div class="header">
     <div class="logo-row">
       <div class="logo">K-pop Intelligence</div>
@@ -101,7 +97,7 @@
     <div class="header-sub">금요일 · 엔터산업 담당자를 위한 자동 업데이트</div>
   </div>
 
-  <div class="intro">최근 30일간 IVE 《Fashion》, BTS 《KEEP SWIMMING》, GOT7 《Breaking Through》 등 총 4건이 발매됐습니다. 최근 컴백 MV 중 BTS의 〈KEEP SWIMMING〉이 94.8M 조회수로 선두를 달리고 있습니다. 엔터산업 주요 동향을 아래에서 확인하세요.</div>
+  <div class="intro">최근 30일간 IVE 《Fashion》, BTS 《KEEP SWIMMING》 등 총 3건이 발매됐습니다. 최근 컴백 MV 중 BTS의 〈KEEP SWIMMING〉이 679K 조회수로 선두입니다. 엔터산업 주요 동향을 아래에서 확인하세요.</div>
 
   <div class="section">
     <div class="section-label">신보 발매 소식 (최근 30일)</div>
@@ -111,9 +107,10 @@
       <div class="card-icon">🎵</div>
       <div class="card-body">
         <div class="card-title">IVE — 《Fashion》</div>
-        <div class="card-source">발매일 2026-04-03 · 싱글</div>
+        <div class="card-source">2026-04-03 · 싱글 · 스타쉽 엔터테인먼트 · 1트랙</div>
         <div class="tags" style="margin-top:8px;">
           <span class="tag tag-teal">싱글</span>
+          
           <a href="https://open.spotify.com/album/1J2prcjhlTgMHpgThVrBEw" target="_blank" class="tag tag-spotify">Spotify →</a>
         </div>
       </div>
@@ -125,9 +122,10 @@
       <div class="card-icon">🎵</div>
       <div class="card-body">
         <div class="card-title">BTS — 《KEEP SWIMMING》</div>
-        <div class="card-source">발매일 2026-03-27 · 정규앨범</div>
+        <div class="card-source">2026-03-27 · 정규앨범 · 빅히트 뮤직 (HYBE) · 9트랙</div>
         <div class="tags" style="margin-top:8px;">
           <span class="tag tag-purple">정규앨범</span>
+          
           <a href="https://open.spotify.com/album/6iPjmGZeonxBZ9r7Cjkezq" target="_blank" class="tag tag-spotify">Spotify →</a>
         </div>
       </div>
@@ -138,24 +136,11 @@
     <div class="card-row">
       <div class="card-icon">🎵</div>
       <div class="card-body">
-        <div class="card-title">GOT7 — 《Breaking Through》</div>
-        <div class="card-source">발매일 2026-03-26 · 싱글</div>
-        <div class="tags" style="margin-top:8px;">
-          <span class="tag tag-teal">싱글</span>
-          <a href="https://open.spotify.com/album/21uBDpJNMAs8iQEC9JkY0j" target="_blank" class="tag tag-spotify">Spotify →</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-row">
-      <div class="card-icon">🎵</div>
-      <div class="card-body">
         <div class="card-title">BTS — 《ARIRANG》</div>
-        <div class="card-source">발매일 2026-03-20 · 정규앨범</div>
+        <div class="card-source">2026-03-20 · 정규앨범 · 빅히트 뮤직 (HYBE) · 14트랙</div>
         <div class="tags" style="margin-top:8px;">
           <span class="tag tag-purple">정규앨범</span>
+          
           <a href="https://open.spotify.com/album/3ukkRHDHbN8tNRPKsGZR1h" target="_blank" class="tag tag-spotify">Spotify →</a>
         </div>
       </div>
@@ -164,68 +149,40 @@
   </div>
 
   <div class="section">
-    <div class="section-label">컴백 일정 (향후 60일)</div>
-    <div class="comeback-list">
-      <p class='empty'>예정된 컴백 없음</p>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">최근 컴백 MV 조회수 순위</div>
+    <div class="section-label">최근 컴백 MV 조회수 — 공식 채널 기준</div>
     <div class="mv-card">
       
   <div class="mv-row">
     <div class="mv-rank">1</div>
     <div class="mv-name">
-      <a href="https://www.youtube.com/watch?v=b4iVv91Z6lY" target="_blank" style="color:inherit;text-decoration:none;">
+      <a href="https://www.youtube.com/watch?v=6MMAJ2gtXMc" target="_blank" style="color:inherit;text-decoration:none;">
         BTS — KEEP SWIMMING
       </a>
     </div>
     <div class="mv-track"><div class="mv-fill" style="width:100%;background:#D4537E;"></div></div>
-    <div class="mv-val">94.8M</div>
+    <div class="mv-val">679K</div>
+  </div>
+      <div class="mv-note">* 최근 30일 내 발매 · 채널 ID 확인된 공식 YouTube 채널만 · 매일 오전 8시 업데이트</div>
+    </div>
   </div>
 
-  <div class="mv-row">
-    <div class="mv-rank">2</div>
-    <div class="mv-name">
-      <a href="https://www.youtube.com/watch?v=4d5C_PQl8Tg" target="_blank" style="color:inherit;text-decoration:none;">
-        GOT7 — Breaking Through
-      </a>
+  <div class="section">
+    <div class="section-label">서클차트 디지털 종합 주간 TOP 10</div>
+    <div class="chart-card">
+      <p class='empty'>서클차트 데이터를 가져오지 못했습니다</p>
+      <div class="chart-source">* 서클차트(Circle Chart) 주간 디지털 종합 기준</div>
     </div>
-    <div class="mv-track"><div class="mv-fill" style="width:35%;background:#378ADD;"></div></div>
-    <div class="mv-val">33.8M</div>
   </div>
 
-  <div class="mv-row">
-    <div class="mv-rank">3</div>
-    <div class="mv-name">
-      <a href="https://www.youtube.com/watch?v=S1bfg8s4OV8" target="_blank" style="color:inherit;text-decoration:none;">
-        IVE — Fashion
-      </a>
-    </div>
-    <div class="mv-track"><div class="mv-fill" style="width:0%;background:#EF9F27;"></div></div>
-    <div class="mv-val">704K</div>
-  </div>
-
-  <div class="mv-row">
-    <div class="mv-rank">4</div>
-    <div class="mv-name">
-      <a href="https://www.youtube.com/watch?v=tdJr5xpt1Lk" target="_blank" style="color:inherit;text-decoration:none;">
-        BTS — ARIRANG
-      </a>
-    </div>
-    <div class="mv-track"><div class="mv-fill" style="width:0%;background:#1D9E75;"></div></div>
-    <div class="mv-val">34K</div>
-  </div>
-      <div class="mv-note">* 최근 30일 내 발매 MV 기준 · 유튜브 조회수 · 매일 오전 8시 자동 업데이트</div>
-    </div>
+  <div class="section">
+    <div class="section-label">케이팝 뉴스</div>
+    <p class='empty'>뉴스를 가져오지 못했습니다</p>
   </div>
 
   <div class="footer">
     <span>K-pop Intelligence · 매일 자동 업데이트</span>
     <span><a href="../index.html">← 최신호</a> · <a href="../archive.html">아카이브</a></span>
   </div>
-
 </div>
 </body>
 </html>
