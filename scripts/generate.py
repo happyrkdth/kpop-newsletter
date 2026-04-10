@@ -30,26 +30,56 @@ DAY_KO = ["월", "화", "수", "목", "금", "토", "일"][datetime.date.today()
 OUTPUT_DIR = Path("newsletters")
 OUTPUT_DIR.mkdir(exist_ok=True)
 
+# API 타임아웃 (초) - 짧게 설정해서 멈춤 방지
+TIMEOUT = 5
 
 # ── 기획사 공식 YouTube 채널 ──────────────────
-# role별 설명:
-#   Agency_Consolidated : 기획사 통합 채널 (HYBE LABELS, SMTOWN 등)
-#   Agency              : 기획사 자체 채널
-#   Distributor         : 유통사 채널 (1theK, Stone Music 등)
+# Agency_Consolidated 채널만 우선 사용 (속도 최적화)
 LABEL_CHANNELS = [
-    {"name": "HYBE LABELS",           "role": "Agency_Consolidated", "channel_id": "UC3IZK6nSKSafO09p2pEqU_Q"},
-    {"name": "SMTOWN",                 "role": "Agency_Consolidated", "channel_id": "UCEf_Bc-KVd7onSeifS3k9hw"},
-    {"name": "JYP Entertainment",      "role": "Agency_Consolidated", "channel_id": "UCaO65SiL97GaJDqhVQSis7g"},
-    {"name": "YG Entertainment",       "role": "Agency_Consolidated", "channel_id": "UC07-dOwgza1vXWsh2UfAs4Q"},
-    {"name": "Starship Entertainment", "role": "Agency",              "channel_id": "UCG70K_An9HshY6C0FfM4aA"},
-    {"name": "THE BLACK LABEL",        "role": "Agency",              "channel_id": "UCwcubL6D8S_p_OtoH24U_Mg"},
-    {"name": "CUBE Entertainment",     "role": "Agency",              "channel_id": "UCritGHo7Yz9nn_Wdm4_F-9A"},
-    {"name": "1theK",                  "role": "Distributor",         "channel_id": "UCweOkHszguqKYSbaM6qZ5GQ"},
-    {"name": "Stone Music Entertainment","role": "Distributor",       "channel_id": "UC_p55Sg4mK_uR7_6961S-rA"},
-    {"name": "Genie Music",            "role": "Distributor",         "channel_id": "UC_o6p6D6uRL3uM_VfXN_T_A"},
+    {"name": "HYBE LABELS",             "role": "Agency_Consolidated", "channel_id": "UC3IZK6nSKSafO09p2pEqU_Q"},
+    {"name": "SMTOWN",                   "role": "Agency_Consolidated", "channel_id": "UCEf_Bc-KVd7onSeifS3k9hw"},
+    {"name": "JYP Entertainment",        "role": "Agency_Consolidated", "channel_id": "UCaO65SiL97GaJDqhVQSis7g"},
+    {"name": "YG Entertainment",         "role": "Agency_Consolidated", "channel_id": "UC07-dOwgza1vXWsh2UfAs4Q"},
+    {"name": "Starship Entertainment",   "role": "Agency",              "channel_id": "UCG70K_An9HshY6C0FfM4aA"},
+    {"name": "THE BLACK LABEL",          "role": "Agency",              "channel_id": "UCwcubL6D8S_p_OtoH24U_Mg"},
+    {"name": "CUBE Entertainment",       "role": "Agency",              "channel_id": "UCritGHo7Yz9nn_Wdm4_F-9A"},
+    {"name": "1theK",                    "role": "Distributor",         "channel_id": "UCweOkHszguqKYSbaM6qZ5GQ"},
+    {"name": "Stone Music Entertainment","role": "Distributor",         "channel_id": "UC_p55Sg4mK_uR7_6961S-rA"},
+    {"name": "Genie Music",              "role": "Distributor",         "channel_id": "UC_o6p6D6uRL3uM_VfXN_T_A"},
 ]
 
-# ── 아티스트 목록 (Spotify 신보 감지용) ───────
+# 아티스트 → 소속 채널 매핑 (직접 지정으로 불필요한 검색 제거)
+ARTIST_CHANNEL_MAP = {
+    "BTS":         "HYBE LABELS",
+    "SEVENTEEN":   "HYBE LABELS",
+    "ENHYPEN":     "HYBE LABELS",
+    "TXT":         "HYBE LABELS",
+    "LE SSERAFIM": "HYBE LABELS",
+    "ILLIT":       "HYBE LABELS",
+    "NewJeans":    "HYBE LABELS",
+    "aespa":       "SMTOWN",
+    "Red Velvet":  "SMTOWN",
+    "RIIZE":       "SMTOWN",
+    "TWICE":       "JYP Entertainment",
+    "Stray Kids":  "JYP Entertainment",
+    "NMIXX":       "JYP Entertainment",
+    "BLACKPINK":   "YG Entertainment",
+    "G-DRAGON":    "YG Entertainment",
+    "IVE":         "Starship Entertainment",
+    "Jennie":      "THE BLACK LABEL",
+    "Rosé":        "THE BLACK LABEL",
+    "(G)I-DLE":    "CUBE Entertainment",
+    # 채널 매핑 없는 아티스트는 1theK에서 검색
+    "IU":          "1theK",
+    "Lisa":        "1theK",
+    "ATEEZ":       "1theK",
+    "BINI":        "1theK",
+}
+
+# 채널명 → channel_id 빠른 조회
+CHANNEL_ID_MAP = {ch["name"]: ch["channel_id"] for ch in LABEL_CHANNELS}
+
+# ── 아티스트 목록 ───────────────────────────
 ARTISTS = {
     "BLACKPINK":   {"spotify_id": "41MozSoPIsD1dJM0CLPjZF", "label": "YG 엔터테인먼트"},
     "IVE":         {"spotify_id": "6RHTUrRF63xao58xh9FXYJ", "label": "스타쉽 엔터테인먼트"},
@@ -95,7 +125,7 @@ def get_spotify_token() -> str:
         "https://accounts.spotify.com/api/token",
         data={"grant_type": "client_credentials"},
         auth=(os.environ["SPOTIFY_CLIENT_ID"], os.environ["SPOTIFY_CLIENT_SECRET"]),
-        timeout=10,
+        timeout=TIMEOUT,
     )
     r.raise_for_status()
     return r.json()["access_token"]
@@ -112,15 +142,9 @@ def fetch_recent_releases(token: str, days: int = 90) -> list[dict]:
             r = requests.get(
                 f"https://api.spotify.com/v1/artists/{info['spotify_id']}/albums",
                 headers=headers,
-                params={"album_type": "album,single,ep", "limit": 10, "market": "KR"},
-                timeout=10,
+                params={"album_type": "album,single,ep", "limit": 5, "market": "KR"},
+                timeout=TIMEOUT,
             )
-            ar = requests.get(
-                f"https://api.spotify.com/v1/artists/{info['spotify_id']}",
-                headers=headers, timeout=10,
-            )
-            genres = ar.json().get("genres", [])
-
             for album in r.json().get("items", []):
                 raw = album.get("release_date", "")
                 try:
@@ -143,7 +167,6 @@ def fetch_recent_releases(token: str, days: int = 90) -> list[dict]:
                         "release_date": raw[:10],
                         "spotify_url":  album["external_urls"]["spotify"],
                         "total_tracks": album.get("total_tracks", 0),
-                        "genres":       genres[:3],
                     })
         except Exception as e:
             print(f"  Spotify error ({artist_name}): {e}")
@@ -153,86 +176,77 @@ def fetch_recent_releases(token: str, days: int = 90) -> list[dict]:
 
 
 # ────────────────────────────────────────────
-# 2. YouTube: 기획사 공식 채널 기반 MV 조회수
+# 2. YouTube: 기획사 채널 직접 매핑으로 빠르게
 # ────────────────────────────────────────────
 
 def fetch_official_mv_views(recent_releases: list[dict]) -> list[dict]:
-    """
-    최근 발매 아티스트명으로 기획사 공식 채널을 검색해
-    공식 MV 조회수를 가져옴.
-    Agency_Consolidated → Agency → Distributor 순으로 시도.
-    """
-    api_key    = os.environ["YOUTUBE_API_KEY"]
-    mv_results = []
-    seen_titles= set()
-    MV_KEYWORDS= ["MV", "M/V", "MUSIC VIDEO", "뮤직비디오", "OFFICIAL VIDEO"]
-
-    # 채널 우선순위 정렬
-    priority = {"Agency_Consolidated": 0, "Agency": 1, "Distributor": 2}
-    channels = sorted(LABEL_CHANNELS, key=lambda x: priority.get(x["role"], 9))
+    api_key     = os.environ["YOUTUBE_API_KEY"]
+    mv_results  = []
+    seen_artists= set()
+    MV_KEYWORDS = ["MV", "M/V", "MUSIC VIDEO", "뮤직비디오", "OFFICIAL VIDEO"]
 
     for release in recent_releases:
-        query_key = (release["artist"], release["title"])
-        if query_key in seen_titles:
+        artist = release["artist"]
+        if artist in seen_artists:
             continue
+        seen_artists.add(artist)
 
-        found = False
-        for ch in channels:
-            if found:
-                break
-            try:
-                r = requests.get(
-                    "https://www.googleapis.com/youtube/v3/search",
-                    params={
-                        "part":      "snippet",
-                        "channelId": ch["channel_id"],
-                        "q":         f"{release['artist']} {release['title']}",
-                        "type":      "video",
-                        "order":     "date",
-                        "maxResults": 5,
-                        "key":       api_key,
-                    },
-                    timeout=10,
-                )
-                items = r.json().get("items", [])
-                if not items:
-                    continue
+        # 아티스트 → 채널 직접 매핑 (없으면 1theK 사용)
+        ch_name    = ARTIST_CHANNEL_MAP.get(artist, "1theK")
+        channel_id = CHANNEL_ID_MAP.get(ch_name, "UCweOkHszguqKYSbaM6qZ5GQ")
 
-                video_id = None
-                for item in items:
-                    vtitle = item["snippet"]["title"].upper()
-                    if any(kw in vtitle for kw in MV_KEYWORDS):
-                        video_id = item["id"]["videoId"]
-                        break
-                if not video_id:
-                    video_id = items[0]["id"]["videoId"]
+        try:
+            r = requests.get(
+                "https://www.googleapis.com/youtube/v3/search",
+                params={
+                    "part":      "snippet",
+                    "channelId": channel_id,
+                    "q":         f"{artist} {release['title']}",
+                    "type":      "video",
+                    "order":     "date",
+                    "maxResults": 5,
+                    "key":       api_key,
+                },
+                timeout=TIMEOUT,
+            )
+            items = r.json().get("items", [])
+            if not items:
+                continue
 
-                stats_r = requests.get(
-                    "https://www.googleapis.com/youtube/v3/videos",
-                    params={"part": "statistics", "id": video_id, "key": api_key},
-                    timeout=10,
-                )
-                stats_items = stats_r.json().get("items", [])
-                if not stats_items:
-                    continue
+            # MV 키워드 포함 영상 우선
+            video_id = None
+            for item in items:
+                if any(kw in item["snippet"]["title"].upper() for kw in MV_KEYWORDS):
+                    video_id = item["id"]["videoId"]
+                    break
+            if not video_id:
+                video_id = items[0]["id"]["videoId"]
 
-                view_count = int(stats_items[0]["statistics"].get("viewCount", 0))
-                if view_count == 0:
-                    continue
+            # 조회수
+            stats_r = requests.get(
+                "https://www.googleapis.com/youtube/v3/videos",
+                params={"part": "statistics", "id": video_id, "key": api_key},
+                timeout=TIMEOUT,
+            )
+            stats_items = stats_r.json().get("items", [])
+            if not stats_items:
+                continue
 
-                mv_results.append({
-                    "artist":       release["artist"],
-                    "title":        release["title"],
-                    "video_id":     video_id,
-                    "views":        view_count,
-                    "channel_name": ch["name"],
-                    "release_date": release["release_date"],
-                })
-                seen_titles.add(query_key)
-                found = True
+            view_count = int(stats_items[0]["statistics"].get("viewCount", 0))
+            if view_count == 0:
+                continue
 
-            except Exception as e:
-                print(f"  YouTube error ({ch['name']} / {release['artist']}): {e}")
+            mv_results.append({
+                "artist":       artist,
+                "title":        release["title"],
+                "video_id":     video_id,
+                "views":        view_count,
+                "channel_name": ch_name,
+                "release_date": release["release_date"],
+            })
+
+        except Exception as e:
+            print(f"  YouTube error ({artist}): {e}")
 
     mv_results.sort(key=lambda x: x["views"], reverse=True)
     return mv_results[:10]
@@ -250,7 +264,6 @@ def fmt_views(n: int) -> str:
 # ────────────────────────────────────────────
 
 def fetch_melon_chart(top_n: int = 10) -> list[dict]:
-    """멜론 실시간 차트 TOP 10"""
     try:
         headers = {
             "User-Agent": (
@@ -263,36 +276,20 @@ def fetch_melon_chart(top_n: int = 10) -> list[dict]:
         r = requests.get(
             "https://www.melon.com/chart/index.htm",
             headers=headers,
-            timeout=15,
+            timeout=TIMEOUT,
         )
         html = r.text
 
-        # 멜론 차트 파싱: 곡명, 아티스트
         songs   = re.findall(r'<div class="ellipsis rank01">\s*<span>\s*<a[^>]*>(.*?)</a>', html)
         artists = re.findall(r'<div class="ellipsis rank02">\s*<span[^>]*>(.*?)</span>', html)
 
         results = []
         for i, (song, artist) in enumerate(zip(songs[:top_n], artists[:top_n]), 1):
-            song_clean   = re.sub(r"<[^>]+>", "", song).strip()
-            artist_clean = re.sub(r"<[^>]+>", "", artist).strip()
-            if song_clean and artist_clean:
-                results.append({"rank": i, "title": song_clean, "artist": artist_clean})
-
-        if results:
-            return results
-
-        # 대체 파싱
-        blocks = re.findall(
-            r'data-song-no[^>]*>.*?class="ellipsis rank01"[^>]*>\s*<span>\s*<a[^>]*>(.*?)</a>.*?'
-            r'class="ellipsis rank02"[^>]*>\s*<span[^>]*>(.*?)</span>',
-            html, re.DOTALL
-        )
-        return [
-            {"rank": i, "title": re.sub(r"<[^>]+>", "", s).strip(),
-             "artist": re.sub(r"<[^>]+>", "", a).strip()}
-            for i, (s, a) in enumerate(blocks[:top_n], 1)
-            if re.sub(r"<[^>]+>", "", s).strip()
-        ]
+            s = re.sub(r"<[^>]+>", "", song).strip()
+            a = re.sub(r"<[^>]+>", "", artist).strip()
+            if s and a:
+                results.append({"rank": i, "title": s, "artist": a})
+        return results
 
     except Exception as e:
         print(f"  Melon chart error: {e}")
@@ -300,27 +297,15 @@ def fetch_melon_chart(top_n: int = 10) -> list[dict]:
 
 
 # ────────────────────────────────────────────
-# 4. 구글 뉴스 RSS: 엔터/케이팝 뉴스 (클릭 → 원문)
+# 4. 구글 뉴스 RSS: 케이팝 뉴스 (클릭 → 원문)
 # ────────────────────────────────────────────
 
 def fetch_kpop_news(max_items: int = 10) -> list[dict]:
-    """
-    구글 뉴스 RSS로 케이팝/엔터 관련 뉴스 수집.
-    클릭 시 원문으로 바로 연결.
-    """
     if feedparser is None:
         print("  feedparser 없음")
         return []
 
-    # 구글 뉴스 RSS - 한국어 케이팝/엔터 키워드
-    QUERIES = [
-        "케이팝 컴백",
-        "K-pop 신보",
-        "아이돌 앨범",
-        "케이팝 차트",
-        "엔터테인먼트 음악",
-    ]
-
+    QUERIES = ["케이팝 컴백", "K-pop 신보", "아이돌 앨범", "케이팝 차트"]
     seen, articles = set(), []
 
     for query in QUERIES:
@@ -328,36 +313,24 @@ def fetch_kpop_news(max_items: int = 10) -> list[dict]:
             break
         try:
             encoded = quote(query)
-            url = (
-                f"https://news.google.com/rss/search"
-                f"?q={encoded}&hl=ko&gl=KR&ceid=KR:ko"
-            )
+            url = f"https://news.google.com/rss/search?q={encoded}&hl=ko&gl=KR&ceid=KR:ko"
             feed = feedparser.parse(url)
             for entry in feed.entries:
                 if len(articles) >= max_items:
                     break
                 title = entry.get("title", "").strip()
-                # 구글 뉴스 제목 형식: "기사제목 - 언론사" → 분리
-                if " - " in title:
-                    headline, source = title.rsplit(" - ", 1)
-                else:
-                    headline, source = title, ""
-
-                link = entry.get("link", "")
-                desc = re.sub(r"<[^>]+>", "", entry.get("summary", "")).strip()
+                headline, source = (title.rsplit(" - ", 1) if " - " in title else (title, ""))
+                link    = entry.get("link", "")
+                desc    = re.sub(r"<[^>]+>", "", entry.get("summary", "")).strip()
                 summary = desc[:120] + "..." if len(desc) > 120 else desc
-                pub_date = entry.get("published", "")[:10]
+                date    = entry.get("published", "")[:10]
 
                 if headline in seen or not headline:
                     continue
                 seen.add(headline)
-
                 articles.append({
-                    "title":   headline,
-                    "source":  source,
-                    "url":     link,
-                    "summary": summary,
-                    "date":    pub_date,
+                    "title": headline, "source": source,
+                    "url": link, "summary": summary, "date": date,
                 })
         except Exception as e:
             print(f"  Google News RSS error ({query}): {e}")
@@ -399,8 +372,10 @@ def build_release_cards(recent: list[dict]) -> str:
     cards = []
     for r in recent:
         _, tag_cls = TYPE_MAP.get(r["type"], (r["type"], "tag-pink"))
-        genre_tags = "".join(f'<span class="tag tag-gray">{g}</span>' for g in r["genres"])
-        meta = " · ".join(p for p in [r["label"], f"{r['total_tracks']}트랙" if r["total_tracks"] else ""] if p)
+        meta = " · ".join(p for p in [
+            r["label"],
+            f"{r['total_tracks']}트랙" if r["total_tracks"] else ""
+        ] if p)
         cards.append(f"""
   <div class="card">
     <div class="card-row">
@@ -410,7 +385,6 @@ def build_release_cards(recent: list[dict]) -> str:
         <div class="card-source">{r['release_date']} · {r['type_ko']} · {meta}</div>
         <div class="tags" style="margin-top:8px;">
           <span class="tag {tag_cls}">{r['type_ko']}</span>
-          {genre_tags}
           <a href="{r['spotify_url']}" target="_blank" class="tag tag-spotify">Spotify →</a>
         </div>
       </div>
@@ -476,7 +450,7 @@ def build_news_cards(articles: list[dict]) -> str:
         return "<p class='empty'>뉴스를 가져오지 못했습니다</p>"
     cards = []
     for a in articles:
-        source_str = f"{a['source']}" if a["source"] else "뉴스"
+        source_str = a["source"] if a["source"] else "Google 뉴스"
         date_str   = f" · {a['date']}" if a["date"] else ""
         cards.append(f"""
   <a class="news-card" href="{a['url']}" target="_blank">
@@ -532,8 +506,6 @@ def render_html(recent, mv_data, chart, news) -> str:
   .section {{ margin-bottom:2.5rem; }}
   .section-label {{ font-size:10px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--text-muted); padding-bottom:.75rem; border-bottom:1px solid var(--border); margin-bottom:1rem; }}
   .empty {{ color:var(--text-muted); font-size:13px; padding:.5rem 0; }}
-
-  /* 신보 카드 */
   .card {{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.1rem 1.25rem; margin-bottom:.6rem; }}
   .card-row {{ display:flex; gap:14px; align-items:flex-start; }}
   .card-icon {{ width:52px; height:52px; border-radius:10px; background:var(--bg); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; border:1px solid var(--border); }}
@@ -549,8 +521,6 @@ def render_html(recent, mv_data, chart, news) -> str:
   .tag-amber   {{ background:var(--amber-bg);  color:var(--amber); }}
   .tag-gray    {{ background:#EDECE8; color:#5C5B57; }}
   .tag-spotify {{ background:#E3F7F1; color:#0D6B52; }}
-
-  /* MV 차트 */
   .mv-card {{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.1rem 1.25rem; }}
   .mv-row {{ display:flex; align-items:center; gap:10px; margin-bottom:12px; }}
   .mv-row:last-of-type {{ margin-bottom:0; }}
@@ -561,8 +531,6 @@ def render_html(recent, mv_data, chart, news) -> str:
   .mv-fill {{ height:100%; border-radius:99px; }}
   .mv-val {{ font-size:12px; font-weight:500; color:var(--text-primary); min-width:44px; text-align:right; flex-shrink:0; }}
   .mv-note {{ font-size:11px; color:var(--text-muted); margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }}
-
-  /* 차트 */
   .chart-card {{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.1rem 1.25rem; }}
   .chart-row {{ display:flex; align-items:center; gap:12px; padding:.6rem 0; border-bottom:1px solid var(--border); }}
   .chart-row:last-child {{ border-bottom:none; }}
@@ -578,20 +546,12 @@ def render_html(recent, mv_data, chart, news) -> str:
   .rank-2 {{ background:#EDECE8; color:#5C5B57; }}
   .rank-3 {{ background:#FAEAF2; color:#9A2E5E; }}
   .chart-source {{ font-size:11px; color:var(--text-muted); margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }}
-
-  /* 뉴스 카드 — 클릭 가능한 <a> 태그 */
-  .news-card {{
-    display:block; text-decoration:none;
-    background:var(--surface); border:1px solid var(--border);
-    border-radius:14px; padding:1rem 1.25rem; margin-bottom:.6rem;
-    transition:border-color .1s, background .1s;
-  }}
-  .news-card:hover {{ border-color:rgba(0,0,0,.22); background:#FAFAF8; }}
-  .news-meta {{ font-size:10px; font-weight:500; letter-spacing:.08em; color:var(--text-muted); margin-bottom:4px; display:flex; align-items:center; gap:4px; }}
-  .ext-arrow {{ font-size:11px; color:var(--text-muted); margin-left:auto; }}
+  .news-card {{ display:block; text-decoration:none; background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1rem 1.25rem; margin-bottom:.6rem; transition:border-color .1s; }}
+  .news-card:hover {{ border-color:rgba(0,0,0,.22); }}
+  .news-meta {{ font-size:10px; font-weight:500; color:var(--text-muted); margin-bottom:4px; display:flex; align-items:center; gap:4px; }}
+  .ext-arrow {{ font-size:11px; margin-left:auto; }}
   .news-title {{ font-size:14px; font-weight:500; color:var(--text-primary); line-height:1.45; margin-bottom:5px; }}
   .news-summary {{ font-size:12px; color:var(--text-secondary); line-height:1.55; }}
-
   .footer {{ border-top:1px solid var(--border); padding-top:1.5rem; margin-top:1rem; font-size:12px; color:var(--text-muted); display:flex; align-items:center; justify-content:space-between; }}
   .footer a {{ color:var(--text-muted); text-decoration:none; }}
   @media(max-width:540px) {{
@@ -604,7 +564,6 @@ def render_html(recent, mv_data, chart, news) -> str:
 </head>
 <body>
 <div class="page">
-
   <div class="header">
     <div class="logo-row">
       <div class="logo">K-pop Intelligence</div>
@@ -625,7 +584,7 @@ def render_html(recent, mv_data, chart, news) -> str:
     <div class="section-label">최근 컴백 MV 조회수 — 기획사 공식 채널 기준</div>
     <div class="mv-card">
       {mv_rows}
-      <div class="mv-note">* 최근 90일 내 발매 · HYBE / SM / JYP / YG 등 기획사 공식 채널 기준 · 매일 오전 8시 업데이트</div>
+      <div class="mv-note">* 최근 90일 내 발매 · 기획사 공식 채널 기준 · 매일 오전 8시 업데이트</div>
     </div>
   </div>
 
@@ -646,7 +605,6 @@ def render_html(recent, mv_data, chart, news) -> str:
     <span>K-pop Intelligence · 매일 자동 업데이트</span>
     <span><a href="../index.html">← 최신호</a> · <a href="../archive.html">아카이브</a></span>
   </div>
-
 </div>
 </body>
 </html>"""
