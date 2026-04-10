@@ -3,401 +3,357 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>K-pop Intelligence · 2026-04-10</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>K-POP 데일리 브리핑 · 2026-04-10</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
-  :root {
-    --bg:#F7F5F0; --surface:#FFF;
-    --border:rgba(0,0,0,.08); --border-strong:rgba(0,0,0,.14);
-    --text-primary:#111110; --text-secondary:#5C5B57; --text-muted:#9C9B96;
-    --accent:#1A1A18;
-    --purple:#4A3FB5; --purple-bg:#EEEDFC;
-    --blue:#1558A8;   --blue-bg:#E8F0FA;
-    --pink:#9A2E5E;   --pink-bg:#FAEAF2;
-    --teal:#0D6B52;   --teal-bg:#E3F7F1;
-    --amber:#7A4B08;  --amber-bg:#FDF0D8;
-  }
-  body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text-primary); font-size:15px; line-height:1.7; }
-  .page { max-width:680px; margin:0 auto; padding:0 1.25rem 4rem; }
-  .header { padding:2.5rem 0 2rem; border-bottom:1px solid var(--border-strong); margin-bottom:2rem; }
-  .logo-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem; }
-  .logo { font-family:'DM Serif Display',serif; font-size:13px; letter-spacing:.18em; text-transform:uppercase; color:var(--text-muted); }
-  .date-badge { font-size:11px; font-weight:500; padding:3px 10px; background:var(--accent); color:#FFF; border-radius:99px; }
-  .header h1 { font-family:'DM Serif Display',serif; font-size:34px; font-weight:400; line-height:1.2; margin-bottom:.5rem; }
-  .header h1 em { font-style:italic; color:var(--text-secondary); }
-  .header-sub { font-size:13px; color:var(--text-muted); }
-  .intro { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.25rem 1.5rem; margin-bottom:2.5rem; font-size:14px; color:var(--text-secondary); line-height:1.8; }
-  .section { margin-bottom:2.5rem; }
-  .section-label { font-size:10px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--text-muted); padding-bottom:.75rem; border-bottom:1px solid var(--border); margin-bottom:1rem; }
-  .empty { color:var(--text-muted); font-size:13px; padding:.5rem 0; }
-  .card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.1rem 1.25rem; margin-bottom:.6rem; }
-  .card-row { display:flex; gap:14px; align-items:flex-start; }
-  .card-icon { width:52px; height:52px; border-radius:10px; background:var(--bg); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; border:1px solid var(--border); }
-  .card-body { flex:1; min-width:0; }
-  .card-title { font-size:14px; font-weight:500; margin-bottom:3px; }
-  .card-source { font-size:11px; color:var(--text-muted); margin-bottom:2px; }
-  .tags { display:flex; flex-wrap:wrap; gap:5px; }
-  .tag { font-size:11px; font-weight:500; padding:2px 9px; border-radius:99px; text-decoration:none; display:inline-block; }
-  .tag-purple { background:var(--purple-bg); color:var(--purple); }
-  .tag-blue   { background:var(--blue-bg);   color:var(--blue); }
-  .tag-pink   { background:var(--pink-bg);   color:var(--pink); }
-  .tag-teal   { background:var(--teal-bg);   color:var(--teal); }
-  .tag-amber  { background:var(--amber-bg);  color:var(--amber); }
-  .tag-gray   { background:#EDECE8; color:#5C5B57; }
-  .tag-spotify { background:#E3F7F1; color:#0D6B52; }
-  .linked-news-wrap { margin-top:10px; padding-top:10px; border-top:1px dashed var(--border-strong); display:flex; flex-direction:column; gap:5px; }
-  .linked-news { display:flex; align-items:center; gap:7px; text-decoration:none; padding:5px 8px; border-radius:8px; background:var(--bg); transition:background .1s; }
-  .linked-news:hover { background:#EDECE8; }
-  .linked-cat { font-size:10px; font-weight:500; padding:1px 7px; border-radius:99px; white-space:nowrap; flex-shrink:0; }
-  .linked-title { font-size:12px; color:var(--text-secondary); line-height:1.4; }
-  .mv-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.1rem 1.25rem; }
-  .mv-row { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
-  .mv-row:last-of-type { margin-bottom:0; }
-  .mv-rank { font-size:11px; font-weight:500; color:var(--text-muted); min-width:16px; text-align:right; flex-shrink:0; }
-  .mv-name { font-size:13px; color:var(--text-secondary); flex:1; min-width:0; }
-  .mv-ch { display:block; font-size:10px; color:var(--text-muted); margin-top:1px; }
-  .mv-track { width:80px; height:5px; background:var(--bg); border-radius:99px; overflow:hidden; flex-shrink:0; }
-  .mv-fill { height:100%; border-radius:99px; }
-  .mv-val { font-size:12px; font-weight:500; color:var(--text-primary); min-width:44px; text-align:right; flex-shrink:0; }
-  .mv-note { font-size:11px; color:var(--text-muted); margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
-  .recent-badge { font-size:9px; font-weight:500; padding:1px 5px; background:var(--pink-bg); color:var(--pink); border-radius:99px; vertical-align:middle; margin-left:4px; }
-  .news-card { display:block; text-decoration:none; background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1rem 1.25rem; margin-bottom:.6rem; transition:border-color .1s; }
-  .news-card:hover { border-color:rgba(0,0,0,.2); }
-  .news-top { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
-  .news-cat { font-size:10px; font-weight:500; padding:2px 8px; border-radius:99px; white-space:nowrap; }
-  .news-meta { font-size:10px; color:var(--text-muted); margin-left:auto; white-space:nowrap; }
-  .news-title { font-size:14px; font-weight:500; color:var(--text-primary); line-height:1.45; margin-bottom:4px; }
-  .news-summary { font-size:12px; color:var(--text-secondary); line-height:1.55; margin-bottom:6px; }
-  .ext-arrow { font-size:11px; color:var(--text-muted); font-weight:500; }
-  .cat-comeback { background:#FBEAF0; color:#72243E; }
-  .cat-chart    { background:#FDF0D8; color:#633806; }
-  .cat-global   { background:#E8F0FA; color:#0C447C; }
-  .cat-brand    { background:#EEEDFC; color:#3C3489; }
-  .cat-biz      { background:#E3F7F1; color:#085041; }
-  .footer { border-top:1px solid var(--border); padding-top:1.5rem; margin-top:1rem; font-size:12px; color:var(--text-muted); display:flex; align-items:center; justify-content:space-between; }
-  .footer a { color:var(--text-muted); text-decoration:none; }
-  @media(max-width:540px) {
-    .header h1 { font-size:26px; }
-    .mv-track { width:50px; }
-    .footer { flex-direction:column; gap:8px; text-align:center; }
-  }
+:root{
+  --ink:#0E0E0E; --ink2:#3A3A3A; --ink3:#7A7A7A;
+  --paper:#F9F7F4; --surface:#FFFFFF;
+  --rule:rgba(0,0,0,0.1); --rule2:rgba(0,0,0,0.06);
+  --accent:#C8102E; --accent2:#1A3A6B;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.7;}
+.page{max-width:760px;margin:0 auto;padding:0 1.5rem 5rem;}
+.masthead{padding:2.5rem 0 1.5rem;border-bottom:2px solid var(--ink);margin-bottom:2rem;display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;}
+.brand{font-family:'Playfair Display',serif;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:var(--ink3);margin-bottom:0.4rem;}
+.masthead h1{font-family:'Playfair Display',serif;font-size:clamp(26px,5vw,42px);font-weight:700;line-height:1.05;letter-spacing:-0.02em;}
+.masthead h1 em{font-style:italic;color:var(--accent);}
+.masthead-right{text-align:right;flex-shrink:0;}
+.date-block{font-family:'Playfair Display',serif;font-size:11px;letter-spacing:0.14em;color:var(--ink3);line-height:1.8;}
+.date-block strong{display:block;font-size:22px;font-weight:400;letter-spacing:-0.01em;color:var(--ink);}
+.section{margin-bottom:2.5rem;}
+.section-head{display:flex;align-items:center;gap:10px;margin-bottom:1rem;padding-bottom:0.6rem;border-bottom:1px solid var(--rule);}
+.section-num{font-family:'Playfair Display',serif;font-size:10px;color:var(--accent);letter-spacing:0.1em;}
+.section-title{font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink2);}
+.comeback-list{background:var(--surface);border:1px solid var(--rule);border-radius:3px;overflow:hidden;}
+.comeback-item{display:flex;align-items:center;gap:14px;padding:0.85rem 1.1rem;border-bottom:1px solid var(--rule2);transition:background 0.1s;}
+.comeback-item:last-child{border-bottom:none;}
+.comeback-item:hover{background:#F5F3F0;}
+.cb-dday{font-family:'Playfair Display',serif;font-size:11px;font-weight:700;min-width:48px;text-align:center;color:#fff;padding:3px 6px;border-radius:2px;flex-shrink:0;}
+.cb-dday.done{background:var(--ink3);} .cb-dday.today{background:var(--accent);} .cb-dday.soon{background:var(--accent2);} .cb-dday.future{background:var(--ink2);}
+.cb-info{flex:1;min-width:0;}
+.cb-artist{font-size:14px;font-weight:700;margin-bottom:1px;}
+.cb-album{font-size:12px;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cb-meta{text-align:right;flex-shrink:0;}
+.cb-label{font-size:10px;color:var(--ink3);letter-spacing:0.05em;margin-bottom:3px;}
+.cb-type{font-size:10px;font-weight:700;padding:2px 7px;border-radius:2px;letter-spacing:0.04em;display:inline-block;}
+.type-album{background:#EDE7F6;color:#4527A0;} .type-mini{background:#E3F2FD;color:#1565C0;} .type-single{background:#E8F5E9;color:#2E7D32;} .type-ep{background:#FFF8E1;color:#F57F17;}
+.mv-wrap{background:var(--surface);border:1px solid var(--rule);border-radius:3px;padding:1.1rem 1.25rem;}
+.mv-row{display:flex;align-items:center;gap:12px;margin-bottom:11px;}
+.mv-row:last-of-type{margin-bottom:0;}
+.mv-rank{font-family:'Playfair Display',serif;font-size:13px;color:var(--ink3);min-width:18px;text-align:right;flex-shrink:0;}
+.mv-info{flex:1;min-width:0;}
+.mv-title{font-size:13px;font-weight:500;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-decoration:none;display:block;}
+.mv-title:hover{color:var(--accent);}
+.mv-ch{font-size:10px;color:var(--ink3);margin-top:1px;}
+.mv-bar-wrap{width:120px;flex-shrink:0;}
+.mv-bar-track{height:4px;background:#EBEBEB;border-radius:99px;overflow:hidden;margin-bottom:3px;}
+.mv-bar-fill{height:100%;border-radius:99px;}
+.mv-views{font-size:11px;font-weight:700;color:var(--ink2);text-align:right;}
+.mv-new{font-size:9px;font-weight:700;padding:1px 5px;background:var(--accent);color:#fff;border-radius:2px;margin-left:5px;vertical-align:middle;letter-spacing:0.04em;}
+.mv-foot{font-size:10px;color:var(--ink3);margin-top:10px;padding-top:10px;border-top:1px solid var(--rule2);}
+.news-grid{display:flex;flex-direction:column;gap:6px;}
+.news-card{display:flex;gap:12px;background:var(--surface);border:1px solid var(--rule);border-radius:3px;padding:0.85rem 1.1rem;text-decoration:none;transition:border-color 0.12s,background 0.12s;align-items:flex-start;}
+.news-card:hover{border-color:var(--ink2);background:#F5F3F0;}
+.news-num{font-family:'Playfair Display',serif;font-size:16px;color:#DCDCDC;font-weight:700;min-width:24px;flex-shrink:0;line-height:1.4;}
+.news-body{flex:1;min-width:0;}
+.news-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:5px;}
+.tag{font-size:9px;font-weight:700;padding:2px 7px;border-radius:2px;letter-spacing:0.06em;text-transform:uppercase;}
+.tag-comeback{background:#FBE9E7;color:#BF360C;} .tag-chart{background:#E3F2FD;color:#1565C0;} .tag-global{background:#E8F5E9;color:#1B5E20;} .tag-brand{background:#F3E5F5;color:#6A1B9A;} .tag-concert{background:#FFF3E0;color:#E65100;} .tag-biz{background:#ECEFF1;color:#263238;} .tag-tech{background:#E0F7FA;color:#006064;}
+.news-headline{font-size:13px;font-weight:500;color:var(--ink);line-height:1.5;margin-bottom:3px;}
+.news-meta-row{display:flex;align-items:center;gap:8px;margin-top:4px;}
+.news-source{font-size:10px;color:var(--ink3);font-weight:500;}
+.news-arrow{font-size:10px;color:var(--ink3);margin-left:auto;flex-shrink:0;}
+.footer{border-top:1px solid var(--rule);padding-top:1.25rem;display:flex;align-items:center;justify-content:space-between;font-size:10px;color:var(--ink3);letter-spacing:0.06em;}
+.footer a{color:var(--ink3);text-decoration:none;}
+.footer a:hover{color:var(--ink);}
+@media(max-width:560px){
+  .masthead{flex-direction:column;align-items:flex-start;}
+  .masthead-right{text-align:left;}
+  .mv-bar-wrap{width:80px;}
+  .cb-meta{display:none;}
+}
 </style>
 </head>
 <body>
 <div class="page">
-  <div class="header">
-    <div class="logo-row">
-      <div class="logo">K-pop Intelligence</div>
-      <div class="date-badge">2026-04-10</div>
+
+  <div class="masthead">
+    <div class="masthead-left">
+      <div class="brand">K-pop Intelligence</div>
+      <h1>케이팝 데일리<br><em>브리핑</em></h1>
     </div>
-    <h1>케이팝 인텔리전스<br><em>데일리 브리핑</em></h1>
-    <div class="header-sub">금요일 · 엔터산업 담당자를 위한 자동 업데이트</div>
-  </div>
-
-  <div class="intro">최근 90일간 등록된 아티스트의 새로운 발매 소식은 없습니다. MV 조회수는 BTS의 〈Dynamite〉이 2.07B으로 선두입니다. 이번 주 뉴스는 '컴백·신보' 관련 소식이 가장 많습니다. 엔터산업 주요 동향을 아래에서 확인하세요.</div>
-
-  <div class="section">
-    <div class="section-label">신보 발매 소식 (최근 90일)</div>
-    <p class='empty'>최근 90일 내 신보 없음</p>
+    <div class="masthead-right">
+      <div class="date-block">
+        <strong>APR 10</strong>
+        2026 · 금요일<br>
+        엔터산업 담당자용
+      </div>
+    </div>
   </div>
 
   <div class="section">
-    <div class="section-label">주요 MV 조회수 — 기획사 공식 채널 기준</div>
-    <div class="mv-card">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <span class="section-title">컴백 &amp; 신보 일정</span>
+    </div>
+    <div class="comeback-list"><div style='padding:1rem;color:#999;font-size:13px;'>수집된 발매 일정이 없습니다</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <span class="section-title">MV 조회수 — 발매 1주 이내 신규 우선</span>
+    </div>
+    <div class="mv-wrap">
       
-  <div class="mv-row">
-    <div class="mv-rank">1</div>
-    <div class="mv-name">
-      <a href="https://www.youtube.com/watch?v=gdZLi9oWNZg" target="_blank" style="color:inherit;text-decoration:none;">
-        BTS — Dynamite 
-      </a>
-      <span class="mv-ch">via HYBE LABELS</span>
-    </div>
-    <div class="mv-track"><div class="mv-fill" style="width:100%;background:#D4537E;"></div></div>
-    <div class="mv-val">2.07B</div>
-  </div>
-
-  <div class="mv-row">
-    <div class="mv-rank">2</div>
-    <div class="mv-name">
-      <a href="https://www.youtube.com/watch?v=gQlMMD8auMs" target="_blank" style="color:inherit;text-decoration:none;">
-        BLACKPINK — Pink Venom 
-      </a>
-      <span class="mv-ch">via YG Entertainment</span>
-    </div>
-    <div class="mv-track"><div class="mv-fill" style="width:51%;background:#378ADD;"></div></div>
-    <div class="mv-val">1.07B</div>
-  </div>
-
-  <div class="mv-row">
-    <div class="mv-rank">3</div>
-    <div class="mv-name">
-      <a href="https://www.youtube.com/watch?v=kOHB85vDuow" target="_blank" style="color:inherit;text-decoration:none;">
-        TWICE — FANCY 
-      </a>
-      <span class="mv-ch">via JYP Entertainment</span>
-    </div>
-    <div class="mv-track"><div class="mv-fill" style="width:33%;background:#EF9F27;"></div></div>
-    <div class="mv-val">690.8M</div>
-  </div>
-
-  <div class="mv-row">
-    <div class="mv-rank">4</div>
-    <div class="mv-name">
-      <a href="https://www.youtube.com/watch?v=ArmDp-zijuc" target="_blank" style="color:inherit;text-decoration:none;">
-        Rosé — APT. 
-      </a>
-      <span class="mv-ch">via THE BLACK LABEL</span>
-    </div>
-    <div class="mv-track"><div class="mv-fill" style="width:13%;background:#1D9E75;"></div></div>
-    <div class="mv-val">279.0M</div>
-  </div>
-
-  <div class="mv-row">
-    <div class="mv-rank">5</div>
-    <div class="mv-name">
-      <a href="https://www.youtube.com/watch?v=pyf8cbqyfPs" target="_blank" style="color:inherit;text-decoration:none;">
-        LE SSERAFIM — ANTIFRAGILE 
-      </a>
-      <span class="mv-ch">via HYBE LABELS</span>
-    </div>
-    <div class="mv-track"><div class="mv-fill" style="width:13%;background:#7F77DD;"></div></div>
-    <div class="mv-val">275.6M</div>
-  </div>
-
-  <div class="mv-row">
-    <div class="mv-rank">6</div>
-    <div class="mv-name">
-      <a href="https://www.youtube.com/watch?v=11cta61wi0g" target="_blank" style="color:inherit;text-decoration:none;">
-        NewJeans — Hype Boy 
-      </a>
-      <span class="mv-ch">via HYBE LABELS</span>
-    </div>
-    <div class="mv-track"><div class="mv-fill" style="width:11%;background:#D85A30;"></div></div>
-    <div class="mv-val">242.1M</div>
-  </div>
-
-  <div class="mv-row">
-    <div class="mv-rank">7</div>
-    <div class="mv-name">
-      <a href="https://www.youtube.com/watch?v=phuiiNCxRMg" target="_blank" style="color:inherit;text-decoration:none;">
-        aespa — Supernova 
-      </a>
-      <span class="mv-ch">via SMTOWN</span>
-    </div>
-    <div class="mv-track"><div class="mv-fill" style="width:11%;background:#639922;"></div></div>
-    <div class="mv-val">238.2M</div>
-  </div>
-
-  <div class="mv-row">
-    <div class="mv-rank">8</div>
-    <div class="mv-name">
-      <a href="https://www.youtube.com/watch?v=Da4P2uT4mVc" target="_blank" style="color:inherit;text-decoration:none;">
-        IVE — Baddie 
-      </a>
-      <span class="mv-ch">via Starship Entertainment</span>
-    </div>
-    <div class="mv-track"><div class="mv-fill" style="width:3%;background:#BA7517;"></div></div>
-    <div class="mv-val">67.2M</div>
-  </div>
-
-  <div class="mv-row">
-    <div class="mv-rank">9</div>
-    <div class="mv-name">
-      <a href="https://www.youtube.com/watch?v=tZj8ov1K7Zs" target="_blank" style="color:inherit;text-decoration:none;">
-        SEVENTEEN — MAESTRO 
-      </a>
-      <span class="mv-ch">via HYBE LABELS</span>
-    </div>
-    <div class="mv-track"><div class="mv-fill" style="width:0%;background:#E24B4A;"></div></div>
-    <div class="mv-val">0</div>
-  </div>
-
-  <div class="mv-row">
-    <div class="mv-rank">10</div>
-    <div class="mv-name">
-      <a href="https://www.youtube.com/watch?v=Wv3vFpDFmjY" target="_blank" style="color:inherit;text-decoration:none;">
-        Stray Kids — MIROH 
-      </a>
-      <span class="mv-ch">via JYP Entertainment</span>
-    </div>
-    <div class="mv-track"><div class="mv-fill" style="width:0%;background:#5DCAA5;"></div></div>
-    <div class="mv-val">0</div>
-  </div>
-
-  <div class="mv-row">
-    <div class="mv-rank">11</div>
-    <div class="mv-name">
-      <a href="https://www.youtube.com/watch?v=wzmCGOcC1N0" target="_blank" style="color:inherit;text-decoration:none;">
-        (G)I-DLE — Queencard 
-      </a>
-      <span class="mv-ch">via CUBE Entertainment</span>
-    </div>
-    <div class="mv-track"><div class="mv-fill" style="width:0%;background:#D4537E;"></div></div>
-    <div class="mv-val">0</div>
-  </div>
-
-  <div class="mv-row">
-    <div class="mv-rank">12</div>
-    <div class="mv-name">
-      <a href="https://www.youtube.com/watch?v=JNTnhBmERQk" target="_blank" style="color:inherit;text-decoration:none;">
-        ILLIT — Magnetic 
-      </a>
-      <span class="mv-ch">via HYBE LABELS</span>
-    </div>
-    <div class="mv-track"><div class="mv-fill" style="width:0%;background:#378ADD;"></div></div>
-    <div class="mv-val">0</div>
-  </div>
-
-  <div class="mv-row">
-    <div class="mv-rank">13</div>
-    <div class="mv-name">
-      <a href="https://www.youtube.com/watch?v=ZMuGVCkJGCw" target="_blank" style="color:inherit;text-decoration:none;">
-        Jennie — MANTRA 
-      </a>
-      <span class="mv-ch">via THE BLACK LABEL</span>
-    </div>
-    <div class="mv-track"><div class="mv-fill" style="width:0%;background:#EF9F27;"></div></div>
-    <div class="mv-val">0</div>
-  </div>
-
-  <div class="mv-row">
-    <div class="mv-rank">14</div>
-    <div class="mv-name">
-      <a href="https://www.youtube.com/watch?v=r2R3L-nKoUo" target="_blank" style="color:inherit;text-decoration:none;">
-        RIIZE — Impossible 
-      </a>
-      <span class="mv-ch">via SMTOWN</span>
-    </div>
-    <div class="mv-track"><div class="mv-fill" style="width:0%;background:#1D9E75;"></div></div>
-    <div class="mv-val">0</div>
-  </div>
-
-  <div class="mv-row">
-    <div class="mv-rank">15</div>
-    <div class="mv-name">
-      <a href="https://www.youtube.com/watch?v=6_d9BnJzQCY" target="_blank" style="color:inherit;text-decoration:none;">
-        G-DRAGON — HOME SWEET HOME 
-      </a>
-      <span class="mv-ch">via YG Entertainment</span>
-    </div>
-    <div class="mv-track"><div class="mv-fill" style="width:0%;background:#7F77DD;"></div></div>
-    <div class="mv-val">0</div>
-  </div>
-      <div class="mv-note">* 기획사 공식 채널 MV 및 M/V 기준 · 유튜브 누적 조회수 · 매일 오전 8시 업데이트</div>
+      <div class="mv-row">
+        <div class="mv-rank">1</div>
+        <div class="mv-info">
+          <a class="mv-title" href="https://www.youtube.com/watch?v=gdZLi9oWNZg" target="_blank">
+            BTS — Dynamite 
+          </a>
+          <div class="mv-ch">via HYBE LABELS</div>
+        </div>
+        <div class="mv-bar-wrap">
+          <div class="mv-bar-track">
+            <div class="mv-bar-fill" style="width:100%;background:#C8102E;"></div>
+          </div>
+          <div class="mv-views">2.07B</div>
+        </div>
+      </div>
+      <div class="mv-row">
+        <div class="mv-rank">2</div>
+        <div class="mv-info">
+          <a class="mv-title" href="https://www.youtube.com/watch?v=gQlMMD8auMs" target="_blank">
+            BLACKPINK — Pink Venom 
+          </a>
+          <div class="mv-ch">via YG Entertainment</div>
+        </div>
+        <div class="mv-bar-wrap">
+          <div class="mv-bar-track">
+            <div class="mv-bar-fill" style="width:51%;background:#1A3A6B;"></div>
+          </div>
+          <div class="mv-views">1.07B</div>
+        </div>
+      </div>
+      <div class="mv-row">
+        <div class="mv-rank">3</div>
+        <div class="mv-info">
+          <a class="mv-title" href="https://www.youtube.com/watch?v=kOHB85vDuow" target="_blank">
+            TWICE — FANCY 
+          </a>
+          <div class="mv-ch">via JYP Entertainment</div>
+        </div>
+        <div class="mv-bar-wrap">
+          <div class="mv-bar-track">
+            <div class="mv-bar-fill" style="width:33%;background:#444;"></div>
+          </div>
+          <div class="mv-views">690.8M</div>
+        </div>
+      </div>
+      <div class="mv-row">
+        <div class="mv-rank">4</div>
+        <div class="mv-info">
+          <a class="mv-title" href="https://www.youtube.com/watch?v=ArmDp-zijuc" target="_blank">
+            Rosé — APT. 
+          </a>
+          <div class="mv-ch">via THE BLACK LABEL</div>
+        </div>
+        <div class="mv-bar-wrap">
+          <div class="mv-bar-track">
+            <div class="mv-bar-fill" style="width:13%;background:#666;"></div>
+          </div>
+          <div class="mv-views">279.1M</div>
+        </div>
+      </div>
+      <div class="mv-row">
+        <div class="mv-rank">5</div>
+        <div class="mv-info">
+          <a class="mv-title" href="https://www.youtube.com/watch?v=pyf8cbqyfPs" target="_blank">
+            LE SSERAFIM — ANTIFRAGILE 
+          </a>
+          <div class="mv-ch">via HYBE LABELS</div>
+        </div>
+        <div class="mv-bar-wrap">
+          <div class="mv-bar-track">
+            <div class="mv-bar-fill" style="width:13%;background:#888;"></div>
+          </div>
+          <div class="mv-views">275.6M</div>
+        </div>
+      </div>
+      <div class="mv-row">
+        <div class="mv-rank">6</div>
+        <div class="mv-info">
+          <a class="mv-title" href="https://www.youtube.com/watch?v=11cta61wi0g" target="_blank">
+            NewJeans — Hype Boy 
+          </a>
+          <div class="mv-ch">via HYBE LABELS</div>
+        </div>
+        <div class="mv-bar-wrap">
+          <div class="mv-bar-track">
+            <div class="mv-bar-fill" style="width:11%;background:#C8102E;"></div>
+          </div>
+          <div class="mv-views">242.1M</div>
+        </div>
+      </div>
+      <div class="mv-row">
+        <div class="mv-rank">7</div>
+        <div class="mv-info">
+          <a class="mv-title" href="https://www.youtube.com/watch?v=phuiiNCxRMg" target="_blank">
+            aespa — Supernova 
+          </a>
+          <div class="mv-ch">via SMTOWN</div>
+        </div>
+        <div class="mv-bar-wrap">
+          <div class="mv-bar-track">
+            <div class="mv-bar-fill" style="width:11%;background:#1A3A6B;"></div>
+          </div>
+          <div class="mv-views">238.2M</div>
+        </div>
+      </div>
+      <div class="mv-row">
+        <div class="mv-rank">8</div>
+        <div class="mv-info">
+          <a class="mv-title" href="https://www.youtube.com/watch?v=Da4P2uT4mVc" target="_blank">
+            IVE — Baddie 
+          </a>
+          <div class="mv-ch">via Starship Entertainment</div>
+        </div>
+        <div class="mv-bar-wrap">
+          <div class="mv-bar-track">
+            <div class="mv-bar-fill" style="width:3%;background:#444;"></div>
+          </div>
+          <div class="mv-views">67.2M</div>
+        </div>
+      </div>
+      <div class="mv-row">
+        <div class="mv-rank">9</div>
+        <div class="mv-info">
+          <a class="mv-title" href="https://www.youtube.com/watch?v=tZj8ov1K7Zs" target="_blank">
+            SEVENTEEN — MAESTRO 
+          </a>
+          <div class="mv-ch">via HYBE LABELS</div>
+        </div>
+        <div class="mv-bar-wrap">
+          <div class="mv-bar-track">
+            <div class="mv-bar-fill" style="width:0%;background:#666;"></div>
+          </div>
+          <div class="mv-views">0</div>
+        </div>
+      </div>
+      <div class="mv-row">
+        <div class="mv-rank">10</div>
+        <div class="mv-info">
+          <a class="mv-title" href="https://www.youtube.com/watch?v=Wv3vFpDFmjY" target="_blank">
+            Stray Kids — MIROH 
+          </a>
+          <div class="mv-ch">via JYP Entertainment</div>
+        </div>
+        <div class="mv-bar-wrap">
+          <div class="mv-bar-track">
+            <div class="mv-bar-fill" style="width:0%;background:#888;"></div>
+          </div>
+          <div class="mv-views">0</div>
+        </div>
+      </div>
+      <div class="mv-row">
+        <div class="mv-rank">11</div>
+        <div class="mv-info">
+          <a class="mv-title" href="https://www.youtube.com/watch?v=wzmCGOcC1N0" target="_blank">
+            (G)I-DLE — Queencard 
+          </a>
+          <div class="mv-ch">via CUBE Entertainment</div>
+        </div>
+        <div class="mv-bar-wrap">
+          <div class="mv-bar-track">
+            <div class="mv-bar-fill" style="width:0%;background:#C8102E;"></div>
+          </div>
+          <div class="mv-views">0</div>
+        </div>
+      </div>
+      <div class="mv-row">
+        <div class="mv-rank">12</div>
+        <div class="mv-info">
+          <a class="mv-title" href="https://www.youtube.com/watch?v=JNTnhBmERQk" target="_blank">
+            ILLIT — Magnetic 
+          </a>
+          <div class="mv-ch">via HYBE LABELS</div>
+        </div>
+        <div class="mv-bar-wrap">
+          <div class="mv-bar-track">
+            <div class="mv-bar-fill" style="width:0%;background:#1A3A6B;"></div>
+          </div>
+          <div class="mv-views">0</div>
+        </div>
+      </div>
+      <div class="mv-row">
+        <div class="mv-rank">13</div>
+        <div class="mv-info">
+          <a class="mv-title" href="https://www.youtube.com/watch?v=ZMuGVCkJGCw" target="_blank">
+            Jennie — MANTRA 
+          </a>
+          <div class="mv-ch">via THE BLACK LABEL</div>
+        </div>
+        <div class="mv-bar-wrap">
+          <div class="mv-bar-track">
+            <div class="mv-bar-fill" style="width:0%;background:#444;"></div>
+          </div>
+          <div class="mv-views">0</div>
+        </div>
+      </div>
+      <div class="mv-row">
+        <div class="mv-rank">14</div>
+        <div class="mv-info">
+          <a class="mv-title" href="https://www.youtube.com/watch?v=r2R3L-nKoUo" target="_blank">
+            RIIZE — Impossible 
+          </a>
+          <div class="mv-ch">via SMTOWN</div>
+        </div>
+        <div class="mv-bar-wrap">
+          <div class="mv-bar-track">
+            <div class="mv-bar-fill" style="width:0%;background:#666;"></div>
+          </div>
+          <div class="mv-views">0</div>
+        </div>
+      </div>
+      <div class="mv-row">
+        <div class="mv-rank">15</div>
+        <div class="mv-info">
+          <a class="mv-title" href="https://www.youtube.com/watch?v=6_d9BnJzQCY" target="_blank">
+            G-DRAGON — HOME SWEET HOME 
+          </a>
+          <div class="mv-ch">via YG Entertainment</div>
+        </div>
+        <div class="mv-bar-wrap">
+          <div class="mv-bar-track">
+            <div class="mv-bar-fill" style="width:0%;background:#888;"></div>
+          </div>
+          <div class="mv-views">0</div>
+        </div>
+      </div>
+      <div class="mv-foot">* 기획사 공식 채널 기준 · MV / M/V 영상 한정 · 매일 오전 8시 자동 업데이트</div>
     </div>
   </div>
 
   <div class="section">
-    <div class="section-label">케이팝 주요 뉴스 (최대 10건)</div>
-    
-  <a class="news-card" href="https://news.google.com/rss/articles/CBMiZEFVX3lxTFBaVHdHcE1MTjlJMkVaZ3cxZnpzWXNPRGJqZE9fcUV4T01YRGVyLWZBZmEzSlZLWHJlTElIOGF5Uk5Lb2hFTWZuclByTEU1ZlRhWU1wZnNIaHlzeHJ3V0ZnWjFsOUo?oc=5" target="_blank">
-    <div class="news-top">
-      <span class="news-cat cat-comeback">컴백·신보</span>
-      <span class="news-meta">bntnews.co.kr · Fri, 06 Fe</span>
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <span class="section-title">오늘의 K-pop 뉴스 클리핑 (최대 10건)</span>
     </div>
-    <div class="news-title">‘컴백’ 에이티즈, 오늘 신보 발매</div>
-    <div class="news-summary">‘컴백’ 에이티즈, 오늘 신보 발매&nbsp;&nbsp;bntnews.co.kr</div>
-    <span class="ext-arrow">원문 보기 →</span>
-  </a>
-
-  <a class="news-card" href="https://news.google.com/rss/articles/CBMia0FVX3lxTE8yOFRNWXloTUFfd1Y2THU1eXFDbDdKMGxkNTVHUjM5WjhBNkl4SW5yLWlrRHByaE1pd1ZDdEtsZ3ZKWWJoUXA2eDRHc1hrRHdSd1Q4X0VTMnYwSDhWdWNoT2c5VmRZWUVGYUZv?oc=5" target="_blank">
-    <div class="news-top">
-      <span class="news-cat cat-comeback">컴백·신보</span>
-      <span class="news-meta">뉴스인 · Wed, 18 Ma</span>
-    </div>
-    <div class="news-title">조권, 8년 만의 솔로 컴백… 신보 ‘Like I Do’ 27일 발매 확정</div>
-    <div class="news-summary">조권, 8년 만의 솔로 컴백… 신보 ‘Like I Do’ 27일 발매 확정&nbsp;&nbsp;뉴스인</div>
-    <span class="ext-arrow">원문 보기 →</span>
-  </a>
-
-  <a class="news-card" href="https://news.google.com/rss/articles/CBMidEFVX3lxTE5tNVhwd2NvRHQ4QXJwX0xVSUp2WTRiYWZCaFM4VHVrQlp3N0ZoYUoxTDNKWm0tbHBBNEZjbFBtd1NGU0tnYUlUNTRpZlhmMzNRYnpNVWZaaEpvVWg1Q3FkOHE4R1ZXa2E1U01yYVJ4bnI4SzVK?oc=5" target="_blank">
-    <div class="news-top">
-      <span class="news-cat cat-comeback">컴백·신보</span>
-      <span class="news-meta">스타뉴스 · Tue, 10 Fe</span>
-    </div>
-    <div class="news-title">누에라, 3월 9일 신보 발매..글로벌 성장형 아이돌의 컴백</div>
-    <div class="news-summary">누에라, 3월 9일 신보 발매..글로벌 성장형 아이돌의 컴백&nbsp;&nbsp;스타뉴스</div>
-    <span class="ext-arrow">원문 보기 →</span>
-  </a>
-
-  <a class="news-card" href="https://news.google.com/rss/articles/CBMidEFVX3lxTE5HSzg1UktPSzFBVlN3VUtSZmdSQ3VoUmMyTEhVMTdZSU9adjhzMDA3UGhxNW04R3NGRVZDczdSdGVEeGZKSk5KNm5HSFFZdkxlYVVLNnBkOF9qbTFROU1IaURUdFdMRTl4Z0VVbWFOSWtGd2ZM?oc=5" target="_blank">
-    <div class="news-top">
-      <span class="news-cat cat-chart">차트·성과</span>
-      <span class="news-meta">스타뉴스 · Wed, 17 De</span>
-    </div>
-    <div class="news-title">르세라핌 'SPAGHETTI', 빌보드 글로벌 차트 7주 연속 진입..K팝 그룹곡 최고 순위</div>
-    <div class="news-summary">르세라핌 'SPAGHETTI', 빌보드 글로벌 차트 7주 연속 진입..K팝 그룹곡 최고 순위&nbsp;&nbsp;스타뉴스</div>
-    <span class="ext-arrow">원문 보기 →</span>
-  </a>
-
-  <a class="news-card" href="https://news.google.com/rss/articles/CBMid0FVX3lxTE5jcDBCMGpMYWU0cmJ1bnpFYmNudGM1VHJRQW9UbVh3ejdFLWZHLUxjVEYtRVUyOUM0TldPbXlVTnVQZWdzYlhGUkZ1X0ZHcVhYbHBYelpUaHVjZElqSnFjZElMR19STU83cGxRYmFscVVlWlZCdXYw0gGLAUFVX3lxTE9tOHFtQ2s4cTFjLUwwV0hQVzRxZVlHdWtPYXhaN1NtdHJVd2hKNWdnb0pXRDFXVk9jdjBPQmJkbUYzTTIxcm90X3RRRFowU2pnVEx6cVdLTXljRHBUeFBLNXExaTcxMzl2N3JGT0FkNkhyOWFWUWJZVjNwUGhKdVFBNjN3U1BpTk9RQ2M?oc=5" target="_blank">
-    <div class="news-top">
-      <span class="news-cat cat-comeback">컴백·신보</span>
-      <span class="news-meta">조선일보 · Wed, 10 Se</span>
-    </div>
-    <div class="news-title">신드롬 ‘케이팝 데몬 헌터스’ 넷플릭스 최초 3억회 보인다</div>
-    <div class="news-summary">신드롬 ‘케이팝 데몬 헌터스’ 넷플릭스 최초 3억회 보인다&nbsp;&nbsp;조선일보</div>
-    <span class="ext-arrow">원문 보기 →</span>
-  </a>
-
-  <a class="news-card" href="https://news.google.com/rss/articles/CBMiYkFVX3lxTE10YnlubmpkV1dObkNpUXN5X01wa0dISVl3TlcyZ0VRNWxseEhrcC12TURQeFZhU1dDbUgxcHlZUDItcmR0aks5LWI0d0NBbFBfdDllYUNnTXdBSko5MFJkWUp30gFcQVVfeXFMUFF1NGNzX2p1RTFZVWhKR1U3N3J2VkpWZDFUQ2swekRwVEdOMTk3NHhDVVRqRkRNRTJrTzZtOGNZM2VPc2VkU0diMEc4YTctUHo5MVBTemM1UmVaWUk?oc=5" target="_blank">
-    <div class="news-top">
-      <span class="news-cat cat-chart">차트·성과</span>
-      <span class="news-meta">더팩트 · Sun, 03 Au</span>
-    </div>
-    <div class="news-title">케데헌 '골든' 오피셜차트 1위…"KPOP 등판 13년만"</div>
-    <div class="news-summary">케데헌 '골든' 오피셜차트 1위…"KPOP 등판 13년만"&nbsp;&nbsp;더팩트</div>
-    <span class="ext-arrow">원문 보기 →</span>
-  </a>
-
-  <a class="news-card" href="https://news.google.com/rss/articles/CBMibkFVX3lxTE9WTEFuekg1NFBxTW9ORUJpR1pUZ25HQjFVVUN0d190UFFhcTdsME9yZ2k5U2FIQ1c1UV9UWGMzZEFTTFY2bUYtNnV4bHZQVy1Dc0dMem05NGJiVFUza1hGXzZJQkExaWdMb1QwaGNR0gFyQVVfeXFMTXhWS0luRVY3YjBMQ011b1BRMGVDeG5vaGVtS2N0V2hLeTFsdF9LTEFuZW5UM2labG8zQ3ZxS1Ztdkw4WkRKVUZzQ3laQTE3QU85WGFwbXk1a1pFZlNZa09ncUM0cDRlQllVdHJXdzlLTF9B?oc=5" target="_blank">
-    <div class="news-top">
-      <span class="news-cat cat-global">글로벌</span>
-      <span class="news-meta">뉴스펭귄 · Wed, 05 No</span>
-    </div>
-    <div class="news-title">"해외에선 하는데 K-POP은 왜 못해?" '저탄소 콘서트' 5가지 노하우</div>
-    <div class="news-summary">"해외에선 하는데 K-POP은 왜 못해?" '저탄소 콘서트' 5가지 노하우&nbsp;&nbsp;뉴스펭귄</div>
-    <span class="ext-arrow">원문 보기 →</span>
-  </a>
-
-  <a class="news-card" href="https://news.google.com/rss/articles/CBMiigFBVV95cUxPYmMzclpJeTlJREFaN0VGS0dlQXJyTW8zU0I1RmNCQ182TFM0WjZkaGhJZlR0UVBndXhwRTgzdjcyU0Y3b0hvUllESEx5enNpM3hiNDVabS1BS01kZEJEVlFmb0hmR2VzVWYtUUFFdjhvWEdwVjB4SGpwbzgwem1tcTJaVjg2RHZJS3fSAZ4BQVVfeXFMTlJqMlVuQ2NzQ29mM2ZVNWtFY3dBRkY4R0QzbFhvMGQ4LUQ5R21BR1I1TWxjRm9GV0d3RFQ5RE1TZE1MT3JrbVNqZkhHUVlIR0gteTlyckJsWjBacDNzVl96TjJQdmNFV0xPOVF2dFU4cGtRa0F5X2FhbGtCVklRNXBpZ0dHeW4wSXFvTWJLUlBYd21tUDhfRnRvZVlOakE?oc=5" target="_blank">
-    <div class="news-top">
-      <span class="news-cat cat-global">글로벌</span>
-      <span class="news-meta">조선일보 · Tue, 23 De</span>
-    </div>
-    <div class="news-title">'2026 렛츠 러브 K-POP 아시아투어' 플랜 공개..동남아 6개국 찾는다</div>
-    <div class="news-summary">'2026 렛츠 러브 K-POP 아시아투어' 플랜 공개..동남아 6개국 찾는다&nbsp;&nbsp;조선일보</div>
-    <span class="ext-arrow">원문 보기 →</span>
-  </a>
-
-  <a class="news-card" href="https://news.google.com/rss/articles/CBMiSEFVX3lxTE1BTkRCMm5QSC1YSFN1YUVGSlNhbEZXVDNLOURZOV9DMFZiMjlxZG4yMEVnVjJmbS1CaXBqWWhTX2hzT2Z4VHBXRQ?oc=5" target="_blank">
-    <div class="news-top">
-      <span class="news-cat cat-global">글로벌</span>
-      <span class="news-meta">플래텀(Platum) · Thu, 05 Ju</span>
-    </div>
-    <div class="news-title">NOL 티켓, K-팝 해외공연 패키지 서비스 론칭…방탄소년단 진 콘서트 첫 상품</div>
-    <div class="news-summary">NOL 티켓, K-팝 해외공연 패키지 서비스 론칭…방탄소년단 진 콘서트 첫 상품&nbsp;&nbsp;플래텀(Platum)</div>
-    <span class="ext-arrow">원문 보기 →</span>
-  </a>
-
-  <a class="news-card" href="https://news.google.com/rss/articles/CBMickFVX3lxTE9PUGZPWHBFQUhpWmlfWEY4YV9zbWV2NXpsT09vQVY2NW1ZcER5R1VsVkFlbDczeUI2S0JPUkNRdC1UVnhIWk9TRURoeFNfWmlpa09GbmVyV0hhNHdVaEE3dnBWM1pxdnBaS0J6QUFfekR2QQ?oc=5" target="_blank">
-    <div class="news-top">
-      <span class="news-cat cat-brand">브랜드</span>
-      <span class="news-meta">한겨레 · Mon, 20 Oc</span>
-    </div>
-    <div class="news-title">케이팝에 ‘명품 앰배서더’라는 유령이 배회한다</div>
-    <div class="news-summary">케이팝에 ‘명품 앰배서더’라는 유령이 배회한다&nbsp;&nbsp;한겨레</div>
-    <span class="ext-arrow">원문 보기 →</span>
-  </a>
+    <div class="news-grid"><div style='padding:1rem;color:#999;font-size:13px;'>뉴스를 가져오지 못했습니다</div></div>
   </div>
 
   <div class="footer">
     <span>K-pop Intelligence · 매일 자동 업데이트</span>
-    <span><a href="../index.html">← 최신호</a> · <a href="../archive.html">아카이브</a></span>
+    <span>
+      <a href="../index.html">← 최신호</a>
+      &nbsp;·&nbsp;
+      <a href="../archive.html">아카이브</a>
+    </span>
   </div>
+
 </div>
 </body>
 </html>
