@@ -21,6 +21,8 @@
   }
   body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text-primary); font-size:15px; line-height:1.7; }
   .page { max-width:680px; margin:0 auto; padding:0 1.25rem 4rem; }
+
+  /* 헤더 */
   .header { padding:2.5rem 0 2rem; border-bottom:1px solid var(--border-strong); margin-bottom:2rem; }
   .logo-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem; }
   .logo { font-family:'DM Serif Display',serif; font-size:13px; letter-spacing:.18em; text-transform:uppercase; color:var(--text-muted); }
@@ -28,9 +30,16 @@
   .header h1 { font-family:'DM Serif Display',serif; font-size:34px; font-weight:400; line-height:1.2; margin-bottom:.5rem; }
   .header h1 em { font-style:italic; color:var(--text-secondary); }
   .header-sub { font-size:13px; color:var(--text-muted); }
-  .intro { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.25rem 1.5rem; margin-bottom:2.5rem; font-size:14px; color:var(--text-secondary); line-height:1.75; }
+
+  /* 서문 */
+  .intro { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.25rem 1.5rem; margin-bottom:2.5rem; font-size:14px; color:var(--text-secondary); line-height:1.8; }
+
+  /* 섹션 */
   .section { margin-bottom:2.5rem; }
   .section-label { font-size:10px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--text-muted); padding-bottom:.75rem; border-bottom:1px solid var(--border); margin-bottom:1rem; }
+  .empty { color:var(--text-muted); font-size:13px; padding:.5rem 0; }
+
+  /* 카드 */
   .card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.1rem 1.25rem; margin-bottom:.6rem; }
   .card-row { display:flex; gap:14px; align-items:flex-start; }
   .card-icon { width:52px; height:52px; border-radius:10px; background:var(--bg); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; border:1px solid var(--border); }
@@ -38,30 +47,44 @@
   .card-title { font-size:14px; font-weight:500; margin-bottom:3px; }
   .card-source { font-size:11px; color:var(--text-muted); }
   .tags { display:flex; flex-wrap:wrap; gap:5px; }
-  .tag { font-size:11px; font-weight:500; padding:2px 9px; border-radius:99px; }
+  .tag { font-size:11px; font-weight:500; padding:2px 9px; border-radius:99px; text-decoration:none; }
   .tag-purple { background:var(--purple-bg); color:var(--purple); }
   .tag-blue   { background:var(--blue-bg);   color:var(--blue); }
   .tag-pink   { background:var(--pink-bg);   color:var(--pink); }
   .tag-teal   { background:var(--teal-bg);   color:var(--teal); }
   .tag-amber  { background:var(--amber-bg);  color:var(--amber); }
+  .tag-spotify { background:#E3F7F1; color:#0D6B52; }
+
+  /* 컴백 일정 */
+  .comeback-list { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+  .comeback-item { display:flex; align-items:center; gap:14px; padding:.85rem 1.25rem; border-bottom:1px solid var(--border); }
+  .comeback-item:last-child { border-bottom:none; }
+  .cb-date { font-size:12px; font-weight:500; color:var(--text-muted); min-width:40px; font-variant-numeric:tabular-nums; }
+  .cb-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .cb-info { flex:1; min-width:0; }
+  .cb-artist { font-size:14px; font-weight:500; }
+  .cb-album { font-size:12px; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .status-badge { font-size:10px; font-weight:500; padding:3px 9px; border-radius:99px; white-space:nowrap; }
+  .status-soon     { background:var(--blue-bg);  color:var(--blue); }
+  .status-upcoming { background:var(--amber-bg); color:var(--amber); }
+
+  /* MV 차트 */
   .mv-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.1rem 1.25rem; }
   .mv-row { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
   .mv-row:last-of-type { margin-bottom:0; }
   .mv-rank { font-size:11px; font-weight:500; color:var(--text-muted); min-width:16px; text-align:right; }
-  .mv-name { font-size:13px; color:var(--text-secondary); min-width:130px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .mv-name { font-size:13px; color:var(--text-secondary); min-width:160px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .mv-track { flex:1; height:5px; background:var(--bg); border-radius:99px; overflow:hidden; }
   .mv-fill { height:100%; border-radius:99px; }
-  .mv-val { font-size:12px; font-weight:500; color:var(--text-primary); min-width:40px; text-align:right; }
+  .mv-val { font-size:12px; font-weight:500; color:var(--text-primary); min-width:44px; text-align:right; }
   .mv-note { font-size:11px; color:var(--text-muted); margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
-  .article-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1rem 1.25rem; margin-bottom:.6rem; }
-  .article-source { font-size:10px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--text-muted); margin-bottom:5px; }
-  .article-title { font-size:14px; font-weight:500; color:var(--text-primary); text-decoration:none; line-height:1.45; display:block; }
-  .article-title:hover { color:var(--purple); }
+
+  /* 푸터 */
   .footer { border-top:1px solid var(--border); padding-top:1.5rem; margin-top:1rem; font-size:12px; color:var(--text-muted); display:flex; align-items:center; justify-content:space-between; }
   .footer a { color:var(--text-muted); text-decoration:none; }
   @media(max-width:540px) {
     .header h1 { font-size:26px; }
-    .mv-name { min-width:90px; }
+    .mv-name { min-width:100px; }
     .footer { flex-direction:column; gap:8px; text-align:center; }
   }
 </style>
@@ -78,132 +101,124 @@
     <div class="header-sub">금요일 · 엔터산업 담당자를 위한 자동 업데이트</div>
   </div>
 
-  <div class="intro">외신에서는 총 15건의 K-pop 관련 기사가 수집됐습니다. 아래에서 신보 발매·MV 조회수·외신 헤드라인을 확인하세요.</div>
+  <div class="intro">최근 30일간 IVE 《Fashion》, BTS 《KEEP SWIMMING》, GOT7 《Breaking Through》 등 총 4건이 발매됐습니다. 최근 컴백 MV 중 BTS의 〈KEEP SWIMMING〉이 94.8M 조회수로 선두를 달리고 있습니다. 엔터산업 주요 동향을 아래에서 확인하세요.</div>
 
   <div class="section">
     <div class="section-label">신보 발매 소식 (최근 30일)</div>
-    <p style='color:#9C9B96;font-size:13px;padding:1rem 0;'>최근 30일 내 신보 없음</p>
+    
+  <div class="card">
+    <div class="card-row">
+      <div class="card-icon">🎵</div>
+      <div class="card-body">
+        <div class="card-title">IVE — 《Fashion》</div>
+        <div class="card-source">발매일 2026-04-03 · 싱글</div>
+        <div class="tags" style="margin-top:8px;">
+          <span class="tag tag-teal">싱글</span>
+          <a href="https://open.spotify.com/album/1J2prcjhlTgMHpgThVrBEw" target="_blank" class="tag tag-spotify">Spotify →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-row">
+      <div class="card-icon">🎵</div>
+      <div class="card-body">
+        <div class="card-title">BTS — 《KEEP SWIMMING》</div>
+        <div class="card-source">발매일 2026-03-27 · 정규앨범</div>
+        <div class="tags" style="margin-top:8px;">
+          <span class="tag tag-purple">정규앨범</span>
+          <a href="https://open.spotify.com/album/6iPjmGZeonxBZ9r7Cjkezq" target="_blank" class="tag tag-spotify">Spotify →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-row">
+      <div class="card-icon">🎵</div>
+      <div class="card-body">
+        <div class="card-title">GOT7 — 《Breaking Through》</div>
+        <div class="card-source">발매일 2026-03-26 · 싱글</div>
+        <div class="tags" style="margin-top:8px;">
+          <span class="tag tag-teal">싱글</span>
+          <a href="https://open.spotify.com/album/21uBDpJNMAs8iQEC9JkY0j" target="_blank" class="tag tag-spotify">Spotify →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-row">
+      <div class="card-icon">🎵</div>
+      <div class="card-body">
+        <div class="card-title">BTS — 《ARIRANG》</div>
+        <div class="card-source">발매일 2026-03-20 · 정규앨범</div>
+        <div class="tags" style="margin-top:8px;">
+          <span class="tag tag-purple">정규앨범</span>
+          <a href="https://open.spotify.com/album/3ukkRHDHbN8tNRPKsGZR1h" target="_blank" class="tag tag-spotify">Spotify →</a>
+        </div>
+      </div>
+    </div>
+  </div>
   </div>
 
   <div class="section">
-    <div class="section-label">주요 MV 조회수</div>
-    <div class="mv-card">
-      
-  <div class="mv-row">
-    <div class="mv-rank">1</div>
-    <div class="mv-name">BLACKPINK — DDU-DU DDU-DU</div>
-    <div class="mv-track"><div class="mv-fill" style="width:100%;background:#D4537E;"></div></div>
-    <div class="mv-val">2.38B</div>
-  </div>
-
-  <div class="mv-row">
-    <div class="mv-rank">2</div>
-    <div class="mv-name">BTS — Dynamite</div>
-    <div class="mv-track"><div class="mv-fill" style="width:87%;background:#378ADD;"></div></div>
-    <div class="mv-val">2.07B</div>
-  </div>
-
-  <div class="mv-row">
-    <div class="mv-rank">3</div>
-    <div class="mv-name">ILLIT — Magnetic</div>
-    <div class="mv-track"><div class="mv-fill" style="width:0%;background:#EF9F27;"></div></div>
-    <div class="mv-val">0</div>
-  </div>
-
-  <div class="mv-row">
-    <div class="mv-rank">4</div>
-    <div class="mv-name">SEVENTEEN — MAESTRO</div>
-    <div class="mv-track"><div class="mv-fill" style="width:0%;background:#1D9E75;"></div></div>
-    <div class="mv-val">0</div>
-  </div>
-
-  <div class="mv-row">
-    <div class="mv-rank">5</div>
-    <div class="mv-name">aespa — Whiplash</div>
-    <div class="mv-track"><div class="mv-fill" style="width:0%;background:#7F77DD;"></div></div>
-    <div class="mv-val">0</div>
-  </div>
-      <div class="mv-note">* 유튜브 기준 누적 조회수 · 매일 오전 8시 자동 업데이트</div>
+    <div class="section-label">컴백 일정 (향후 60일)</div>
+    <div class="comeback-list">
+      <p class='empty'>예정된 컴백 없음</p>
     </div>
   </div>
 
   <div class="section">
-    <div class="section-label">외신 헤드라인</div>
-    
-  <div class="article-card">
-    <div class="article-source">Billboard · Fri, 10 Apr 2026</div>
-    <a class="article-title" href="https://www.billboard.com/music/country/ella-langley-dandelion-stream-it-now-1236218920/" target="_blank">Ella Langley Stays True to Her Roots on Introspective New Album ‘Dandelion’: Stream It Now</a>
+    <div class="section-label">최근 컴백 MV 조회수 순위</div>
+    <div class="mv-card">
+      
+  <div class="mv-row">
+    <div class="mv-rank">1</div>
+    <div class="mv-name">
+      <a href="https://www.youtube.com/watch?v=b4iVv91Z6lY" target="_blank" style="color:inherit;text-decoration:none;">
+        BTS — KEEP SWIMMING
+      </a>
+    </div>
+    <div class="mv-track"><div class="mv-fill" style="width:100%;background:#D4537E;"></div></div>
+    <div class="mv-val">94.8M</div>
   </div>
 
-  <div class="article-card">
-    <div class="article-source">Billboard · Fri, 10 Apr 2026</div>
-    <a class="article-title" href="https://www.billboard.com/pro/lil-baby-company-sues-wham-hemp-partner-thc-levels-e-coli/" target="_blank">Lil Baby’s Company Sues Biz Partner Over Illegal THC Levels and E. Coli in Hemp Products</a>
+  <div class="mv-row">
+    <div class="mv-rank">2</div>
+    <div class="mv-name">
+      <a href="https://www.youtube.com/watch?v=4d5C_PQl8Tg" target="_blank" style="color:inherit;text-decoration:none;">
+        GOT7 — Breaking Through
+      </a>
+    </div>
+    <div class="mv-track"><div class="mv-fill" style="width:35%;background:#378ADD;"></div></div>
+    <div class="mv-val">33.8M</div>
   </div>
 
-  <div class="article-card">
-    <div class="article-source">Billboard · Thu, 09 Apr 2026</div>
-    <a class="article-title" href="https://www.billboard.com/lists/bts-setlist-every-song-arirang-tour-goyang-stadium/" target="_blank">BTS’ ‘ARIRANG’ Concert Setlist: Every Song From Night 1 at South Korea’s Goyang Stadium</a>
+  <div class="mv-row">
+    <div class="mv-rank">3</div>
+    <div class="mv-name">
+      <a href="https://www.youtube.com/watch?v=S1bfg8s4OV8" target="_blank" style="color:inherit;text-decoration:none;">
+        IVE — Fashion
+      </a>
+    </div>
+    <div class="mv-track"><div class="mv-fill" style="width:0%;background:#EF9F27;"></div></div>
+    <div class="mv-val">704K</div>
   </div>
 
-  <div class="article-card">
-    <div class="article-source">Rolling Stone · Thu, 09 Apr 2026</div>
-    <a class="article-title" href="https://www.rollingstone.com/product-recommendations/style/chicago-bulls-air-jordan-t-shirt-shorts-sneakers-buy-online-1235544068/" target="_blank">Jordan Brand Nods to the Nineties With Chicago Bulls Capsule That’s Selling Out Online</a>
+  <div class="mv-row">
+    <div class="mv-rank">4</div>
+    <div class="mv-name">
+      <a href="https://www.youtube.com/watch?v=tdJr5xpt1Lk" target="_blank" style="color:inherit;text-decoration:none;">
+        BTS — ARIRANG
+      </a>
+    </div>
+    <div class="mv-track"><div class="mv-fill" style="width:0%;background:#1D9E75;"></div></div>
+    <div class="mv-val">34K</div>
   </div>
-
-  <div class="article-card">
-    <div class="article-source">Pitchfork · Wed, 08 Apr 2026</div>
-    <a class="article-title" href="https://pitchfork.com/news/nine-inch-nails-and-boys-noize-confirm-collaborative-album/" target="_blank">Nine Inch Nails and Boys Noize Confirm Collaborative Album</a>
-  </div>
-
-  <div class="article-card">
-    <div class="article-source">Pitchfork · Wed, 08 Apr 2026</div>
-    <a class="article-title" href="https://pitchfork.com/news/lindsey-buckinghams-stalker-charged-after-attacking-him-in-santa-monica/" target="_blank">Lindsey Buckingham’s Stalker Charged After Attacking Him in Santa Monica</a>
-  </div>
-
-  <div class="article-card">
-    <div class="article-source">Pitchfork · Tue, 07 Apr 2026</div>
-    <a class="article-title" href="https://pitchfork.com/news/isaiah-rashad-teases-return-with-its-been-awful/" target="_blank">Isaiah Rashad Teases Return With It’s Been Awful</a>
-  </div>
-
-  <div class="article-card">
-    <div class="article-source">NME · Thu, 09 Apr 2026</div>
-    <a class="article-title" href="https://www.nme.com/news/music/courteeners-god-bless-the-band-best-of-luckiest-man-alive-intimate-manchester-night-day-uk-arena-tour-tickets-3939359?utm_source=rss&utm_medium=rss&utm_campaign=courteeners-god-bless-the-band-best-of-luckiest-man-alive-intimate-manchester-night-day-uk-arena-tour-tickets" target="_blank">‘God Bless The Band’: Courteeners announce ‘best of’ album with single ‘Luckiest Man Alive’ and 2026 arena tour</a>
-  </div>
-
-  <div class="article-card">
-    <div class="article-source">NME · Thu, 09 Apr 2026</div>
-    <a class="article-title" href="https://www.nme.com/news/tv/ketamine-queen-sentenced-to-15-years-in-prison-over-matthew-perry-death-3939350?utm_source=rss&utm_medium=rss&utm_campaign=ketamine-queen-sentenced-to-15-years-in-prison-over-matthew-perry-death" target="_blank">‘Ketamine Queen’ sentenced to 15 years in prison over Matthew Perry death</a>
-  </div>
-
-  <div class="article-card">
-    <div class="article-source">The Guardian Music · Thu, 09 Apr 2026</div>
-    <a class="article-title" href="https://www.theguardian.com/music/2026/apr/09/afrika-bambaataa-hip-hop-pioneer-dies" target="_blank">Afrika Bambaataa, hip-hop pioneer, dies aged 67</a>
-  </div>
-
-  <div class="article-card">
-    <div class="article-source">The Guardian Music · Thu, 09 Apr 2026</div>
-    <a class="article-title" href="https://www.theguardian.com/music/2026/apr/09/my-new-band-believe-review-beautiful-ideas-burst-from-ex-black-midi-mans-lovable-debut-album" target="_blank">My New Band Believe review – beautiful ideas burst from ex-Black Midi man’s lovable debut album</a>
-  </div>
-
-  <div class="article-card">
-    <div class="article-source">The Guardian Music · Thu, 09 Apr 2026</div>
-    <a class="article-title" href="https://www.theguardian.com/music/2026/apr/09/belle-and-sebastian-review-albert-hall-tigermilk-stuart-murdoch" target="_blank">Belle and Sebastian review – joyful anniversary tour makes debut album brighter than ever</a>
-  </div>
-
-  <div class="article-card">
-    <div class="article-source">Variety · Fri, 10 Apr 2026</div>
-    <a class="article-title" href="https://variety.com/2026/film/news/behind-the-mask-sequel-leslie-vernon-cast-1236712587/" target="_blank">‘Behind the Mask’ Sequel Set After 20 Years, Reuniting Original Director and Cast for ‘The Return of Leslie Vernon’ (EXCLUSIVE)</a>
-  </div>
-
-  <div class="article-card">
-    <div class="article-source">Variety · Thu, 09 Apr 2026</div>
-    <a class="article-title" href="https://variety.com/2026/tv/news/disney-april-carretta-evp-communications-dana-walden-1236712999/" target="_blank">Disney Promotes April Carretta to EVP of Communications, Exec to Lead PR for Dana Walden</a>
-  </div>
-
-  <div class="article-card">
-    <div class="article-source">Variety · Thu, 09 Apr 2026</div>
-    <a class="article-title" href="https://variety.com/2026/music/news/daddy-yankee-latin-recording-academy-person-of-the-year-2026-1236710776/" target="_blank">Music Industry Moves: Laufey Re-Ups With Warner Chappell, Will Receive ASCAP’s Creative Voice Award; Miles Gersh Upped to EVP at Warner Records</a>
-  </div>
+      <div class="mv-note">* 최근 30일 내 발매 MV 기준 · 유튜브 조회수 · 매일 오전 8시 자동 업데이트</div>
+    </div>
   </div>
 
   <div class="footer">
